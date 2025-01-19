@@ -1,90 +1,203 @@
 #include <gtest/gtest.h>
 
+#include <cmath>
+#include <limits>
+
 #include "tuple.h"
 
 // Demonstrate some basic assertions.
-TEST(Tuple, IsPoint) 
+TEST(tuple, IsPoint) 
 {
-  Tuple t{4.3f, -4.2f, 3.1f, 1.0f};
+  tuple v{4.3f, -4.2f, 3.1f, 1.0f};
 
-  EXPECT_EQ(t.x, 4.3f);
-  EXPECT_EQ(t.y, -4.2f);
-  EXPECT_EQ(t.z, 3.1f);
-  EXPECT_EQ(t.w, 1.0f);
-  EXPECT_TRUE(t.is_point());
-  EXPECT_FALSE(t.is_vector());
+  EXPECT_EQ(v.x, 4.3f);
+  EXPECT_EQ(v.y, -4.2f);
+  EXPECT_EQ(v.z, 3.1f);
+  EXPECT_EQ(v.w, 1.0f);
+  EXPECT_TRUE(v.is_point());
+  EXPECT_FALSE(v.is_vector());
 }
 
-TEST(Tuple, IsVector) {
-  Tuple t{4.3f, -4.2f, 3.1f, 0.0f};
+TEST(tuple, IsVector) {
+  tuple v{4.3f, -4.2f, 3.1f, 0.0f};
 
-  EXPECT_EQ (t.x, 4.3f);
-  EXPECT_EQ (t.y, -4.2f);
-  EXPECT_EQ (t.z, 3.1f);
-  EXPECT_EQ (t.w, 0.0f);
-  EXPECT_TRUE(t.is_vector());
-  EXPECT_FALSE(t.is_point());
+  EXPECT_EQ (v.x, 4.3f);
+  EXPECT_EQ (v.y, -4.2f);
+  EXPECT_EQ (v.z, 3.1f);
+  EXPECT_EQ (v.w, 0.0f);
+  EXPECT_TRUE(v.is_vector());
+  EXPECT_FALSE(v.is_point());
 }
 
-TEST(Tuple, PointFactory) {
-  Tuple a = Tuple::create_point(4, -4, 3);
-  Tuple b = {4, -4, 3, 1};
+TEST(tuple, PointFactory) {
+  tuple v = tuple::create_point(4.f, -4.f, 3.f);
+  tuple u = {4.f, -4.f, 3.f, 1.f};
 
-  EXPECT_EQ (a, b);
-  EXPECT_TRUE(a.is_point());
-  EXPECT_FALSE(a.is_vector());
+  EXPECT_EQ (v, u);
+  EXPECT_TRUE(v.is_point());
+  EXPECT_FALSE(v.is_vector());
 }
 
-TEST(Tuple, VectorFactory) {
-  Tuple a = Tuple::create_vector(4, -4, 3);
-  Tuple b = {4, -4, 3, 0};
+TEST(tuple, VectorFactory) {
+  tuple v = tuple::create_vector(4.f, -4.f, 3.f);
+  tuple u = {4.f, -4.f, 3.f, 0.f};
 
-  EXPECT_EQ (a, b);
-  EXPECT_TRUE(a.is_vector());
-  EXPECT_FALSE(a.is_point());
+  EXPECT_EQ (v, u);
+  EXPECT_TRUE(v.is_vector());
+  EXPECT_FALSE(v.is_point());
 }
 
 
-TEST(Tuple, Equals) 
+TEST(tuple, Equals) 
 {
-    Tuple a = {1, 2, 3, 4};
-    Tuple b = {1, 2, 3, 4};
+  tuple v = {1.f, 2.f, 3.f, 4.f};
+  tuple u = {1.f, 2.f, 3.f, 4.f};
 
-    EXPECT_EQ(a, b);
+  EXPECT_EQ(v, u);
 }
 
 
-TEST(Tuple, NotEqualsX) {
-    Tuple a = {0, 2, 3, 4};
-    Tuple b = {1, 2, 3, 4};
+TEST(tuple, NotEqualsX) {
+  tuple v = {0, 2.f, 3.f, 4.f};
+  tuple u = {1.f, 2.f, 3.f, 4.f};
 
-    EXPECT_NE(a, b);
+  EXPECT_NE(v, u);
 }
 
-TEST(Tuple, NotEqualsY) {
-    Tuple a = {1, 2, 3, 4};
-    Tuple b = {1, 1, 3, 4};
+TEST(tuple, NotEqualsY) {
+  tuple v = {1.f, 2.f, 3.f, 4.f};
+  tuple u = {1.f, 1.f, 3.f, 4.f};
 
-    EXPECT_NE(a, b);
+  EXPECT_NE(v, u);
 }
 
-TEST(Tuple, NotEqualsZ) {
-    Tuple a = {1, 2, 1, 4};
-    Tuple b = {1, 2, 3, 4};
+TEST(tuple, NotEqualsZ) {
+  tuple v = {1.f, 2.f, 1.f, 4.f};
+  tuple u = {1.f, 2.f, 3.f, 4.f};
 
-    EXPECT_NE(a, b);
+  EXPECT_NE(v, u);
 }
 
-TEST(Tuple, NotEqualsW) {
-    Tuple a = {1, 2, 3, 1};
-    Tuple b = {1, 2, 3, 4};
+TEST(tuple, NotEqualsW) {
+  tuple v = {1.f, 2.f, 3.f, 1.f};
+  tuple u = {1.f, 2.f, 3.f, 4.f};
 
-    EXPECT_NE(a, b);
+  EXPECT_NE(v, u);
 }
 
-TEST(Tuple, NotEqualsAll) {
-    Tuple a = {4, 3, 2, 1};
-    Tuple b = {1, 2, 3, 4};
+TEST(tuple, NotEqualsAll) {
+  tuple v = {4.f, 3.f, 2.f, 1.f};
+  tuple u = {1.f, 2.f, 3.f, 4.f};
 
-    EXPECT_NE(a, b);
+  EXPECT_NE(v, u);
 }
+
+TEST(tuple, Addition) {
+  tuple v = {3.f, -2.f, 5.f, 1.f};
+  tuple u = {-2.f, 3.f, 1.f, 0.f};
+
+  tuple expected = {1.f, 1.f, 6.f, 1.f};
+
+  EXPECT_EQ(expected, v+u);
+}
+
+TEST(tuple, Subraction) {
+  tuple v = tuple::create_point(3.f, 2.f, 1.f);
+  tuple u = tuple::create_point(5.f, 6.f, 7.f);
+    
+  tuple expected = tuple::create_vector(-2.f, -4.f, -6);
+
+  EXPECT_EQ(expected, v-u);
+
+  v = tuple::create_point(3.f, 2.f, 1.f);
+  u = tuple::create_vector(5.f, 6.f, 7.f);
+    
+  expected = tuple::create_point(-2.f, -4.f, -6.f);
+
+  EXPECT_EQ(expected, v-u);
+
+  v = tuple::create_vector(3.f, 2.f, 1.f);
+  u = tuple::create_vector(5.f, 6.f, 7.f);
+    
+  expected = tuple::create_vector(-2.f, -4.f, -6.f);
+
+  EXPECT_EQ(expected, v-u);
+  v = tuple::zero();
+  u = tuple::create_vector(1.f, -2.f, 3.f);
+    
+  expected = tuple::create_vector(-1.f, 2.f, -3.f);
+
+  EXPECT_EQ(expected, v-u);
+
+  v = {1.f, -2.f, 3.f, -4.f};
+
+  expected = {-1.f, 2.f, -3.f, 4.f};
+
+  EXPECT_EQ(expected, -v);
+}
+
+TEST(tuple, Multiplication) {
+  tuple v = {1.f, -2.f, 3.f, -4.f};
+
+  tuple expected = {3.5f, -7.f, 10.5f, -14.f};
+
+  EXPECT_EQ(expected, v*3.5f);
+  EXPECT_EQ(expected, 3.5f*v);
+
+  v = {1.f, -2.f, 3.f, -4.f};
+
+  expected = {0.5, -1.f, 1.5f, -2.f};
+
+  EXPECT_EQ(expected, v*0.5f);
+  EXPECT_EQ(expected, 0.5f*v);
+}
+
+TEST(tuple, Division) {
+  tuple v = {1.f, -2.f, 3.f, -4.f};
+
+  tuple expected = {0.5, -1.f, 1.5f, -2.f};
+
+  EXPECT_EQ(expected, v/2.f);
+}
+
+TEST(tuple, Length) {
+  tuple v = tuple::create_vector(1.f, 0.f, 0.f);
+
+  EXPECT_EQ(v.length(), 1.0f);
+
+  v = tuple::create_vector(0.f, 1.f, 0.f);
+
+  EXPECT_EQ(v.length(), 1.0f);    
+    
+  v = tuple::create_vector(0.f, 0.f, 1.f);
+
+  EXPECT_EQ(v.length(), 1.0f);
+
+  v = tuple::create_vector(1.f, 2.f, 3.f);
+
+  EXPECT_NEAR(v.length(), std::sqrt(14.f), std::numeric_limits<float>::epsilon());
+
+  v = tuple::create_vector(1.f, -2.f, -3.f);
+
+  EXPECT_NEAR(v.length(), std::sqrt(14.f), std::numeric_limits<float>::epsilon());
+}
+
+TEST(tuple, Normalize) {
+  tuple v = tuple::create_vector(4.f, 0.f, 0.f);
+
+  tuple expected = {1.0f, 0.0f, 0.0f, 0.0f};
+
+  EXPECT_EQ(v.normalized(), expected);
+  
+  v = tuple::create_vector(1.f, 2.f, 3.f);
+
+  tuple n = v.normalized();
+
+  expected = {1.0f/std::sqrt(14.f), 2.0f/std::sqrt(14.f), 3.0f/std::sqrt(14.f), 0.0f};
+
+  EXPECT_EQ(n, expected);
+
+  EXPECT_NEAR(n.length(), 1.f, std::numeric_limits<float>::epsilon());
+}
+
+

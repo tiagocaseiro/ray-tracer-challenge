@@ -1,37 +1,95 @@
 #include "tuple.h"
 
 #include <cmath>
-#include <limits>
 
-static bool equals(float a, float b)
+#include "common.h"
+
+tuple::tuple(const float _x, const float _y, const float _z, const float _w) : x(_x), y(_y), z(_z), w(_w)
 {
-    return std::fabs(a-b) < std::numeric_limits<float>::epsilon();
 }
 
-bool Tuple::is_point() const noexcept
+tuple::tuple(const float a) : x(a), y(a), z(a), w(a)
+{
+
+}
+
+bool tuple::is_point() const
 {
     return equals(w, 1.0f);
 }
 
-bool Tuple::is_vector() const noexcept
+bool tuple::is_vector() const
 {
     return equals(w, 0.0f);
 }
 
-Tuple Tuple::create_point(float x, float y, float z)
+tuple tuple::create_point(const float x, const float y, const float z)
 {
     return {x, y, z, 1.0f};
 }
 
-Tuple Tuple::create_vector(float x, float y, float z)
+tuple tuple::create_vector(const float x, const float y, const float z)
 {
     return {x, y, z, 0.0f};
 }
 
-bool Tuple::operator==(const Tuple& other) const
+tuple tuple::zero()
+{
+    return tuple{0.0f};
+}
+
+bool tuple::operator==(const tuple& other) const
 {
     return equals(x, other.x) && 
-           equals(y, other.y)  &&
-           equals(z, other.z)  &&
-           equals(w, other.w) ;
+           equals(y, other.y) &&
+           equals(z, other.z) &&
+           equals(w, other.w);
+}
+
+tuple tuple::operator+(const tuple& other) const
+{
+    return {x+other.x, y+other.y, z+other.z, w+other.w};
+}
+
+tuple tuple::operator-(const tuple& other) const
+{
+    return {x-other.x, y-other.y, z-other.z, w-other.w};
+}
+
+tuple tuple::operator*(const float scalar) const
+{
+ return {x*scalar, y*scalar, z*scalar, w*scalar};
+}
+
+tuple tuple::operator/(const float scalar)  const
+{
+    return {x/scalar, y/scalar, z/scalar, w/scalar};
+}
+
+float tuple::length() const
+{
+    return std::sqrt(x*x + y*y + z*z + w*w);
+}
+
+tuple tuple::normalized() const
+{
+    const float l = length();
+    return {x/l, y/l, z/l, w/l};
+}
+
+
+std::ostream& operator<<(std::ostream& os, const tuple& tuple)
+{
+    os << "["<< tuple.x << " " << tuple.y << " " << tuple.z << " " << tuple.w << "]"; 
+    return os;
+}
+
+tuple operator-(const tuple& tuple)
+{
+    return tuple*-1;
+}
+
+tuple operator*(float scalar, const tuple& tuple)
+{
+    return tuple*scalar;
 }
