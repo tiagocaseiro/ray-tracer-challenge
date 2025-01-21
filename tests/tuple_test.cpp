@@ -14,8 +14,8 @@ TEST(tuple, IsPoint)
   EXPECT_EQ(v.y, -4.2f);
   EXPECT_EQ(v.z, 3.1f);
   EXPECT_EQ(v.w, 1.0f);
-  EXPECT_TRUE(v.is_point());
-  EXPECT_FALSE(v.is_vector());
+  EXPECT_TRUE(is_point(v));
+  EXPECT_FALSE(is_vector(v));
 }
 
 TEST(tuple, IsVector) {
@@ -25,8 +25,8 @@ TEST(tuple, IsVector) {
   EXPECT_EQ (v.y, -4.2f);
   EXPECT_EQ (v.z, 3.1f);
   EXPECT_EQ (v.w, 0.0f);
-  EXPECT_TRUE(v.is_vector());
-  EXPECT_FALSE(v.is_point());
+  EXPECT_TRUE(is_vector(v));
+  EXPECT_FALSE(is_point(v));
 }
 
 TEST(tuple, PointFactory) {
@@ -34,8 +34,8 @@ TEST(tuple, PointFactory) {
   tuple u = {4.f, -4.f, 3.f, 1.f};
 
   EXPECT_EQ (v, u);
-  EXPECT_TRUE(v.is_point());
-  EXPECT_FALSE(v.is_vector());
+  EXPECT_TRUE(is_point(v));
+  EXPECT_FALSE(is_vector(v));
 }
 
 TEST(tuple, VectorFactory) {
@@ -43,8 +43,8 @@ TEST(tuple, VectorFactory) {
   tuple u = {4.f, -4.f, 3.f, 0.f};
 
   EXPECT_EQ (v, u);
-  EXPECT_TRUE(v.is_vector());
-  EXPECT_FALSE(v.is_point());
+  EXPECT_TRUE(is_vector(v));
+  EXPECT_FALSE(is_point(v));
 }
 
 
@@ -163,23 +163,23 @@ TEST(tuple, Division) {
 TEST(tuple, Length) {
   tuple v = tuple::create_vector(1.f, 0.f, 0.f);
 
-  EXPECT_EQ(v.length(), 1.0f);
+  EXPECT_EQ(length(v), 1.0f);
 
   v = tuple::create_vector(0.f, 1.f, 0.f);
 
-  EXPECT_EQ(v.length(), 1.0f);    
+  EXPECT_EQ(length(v), 1.0f);    
     
   v = tuple::create_vector(0.f, 0.f, 1.f);
 
-  EXPECT_EQ(v.length(), 1.0f);
+  EXPECT_EQ(length(v), 1.0f);
 
   v = tuple::create_vector(1.f, 2.f, 3.f);
 
-  EXPECT_NEAR(v.length(), std::sqrt(14.f), std::numeric_limits<float>::epsilon());
+  EXPECT_NEAR(length(v), std::sqrt(14.f), std::numeric_limits<float>::epsilon());
 
   v = tuple::create_vector(1.f, -2.f, -3.f);
 
-  EXPECT_NEAR(v.length(), std::sqrt(14.f), std::numeric_limits<float>::epsilon());
+  EXPECT_NEAR(length(v), std::sqrt(14.f), std::numeric_limits<float>::epsilon());
 }
 
 TEST(tuple, Normalize) {
@@ -187,17 +187,39 @@ TEST(tuple, Normalize) {
 
   tuple expected = {1.0f, 0.0f, 0.0f, 0.0f};
 
-  EXPECT_EQ(v.normalized(), expected);
+  EXPECT_EQ(normalized(v), expected);
   
   v = tuple::create_vector(1.f, 2.f, 3.f);
 
-  tuple n = v.normalized();
+  tuple n = normalized(v);
 
   expected = {1.0f/std::sqrt(14.f), 2.0f/std::sqrt(14.f), 3.0f/std::sqrt(14.f), 0.0f};
 
   EXPECT_EQ(n, expected);
 
-  EXPECT_NEAR(n.length(), 1.f, std::numeric_limits<float>::epsilon());
+  EXPECT_NEAR(length(n), 1.f, std::numeric_limits<float>::epsilon());
+}
+
+TEST(tuple, Dot) {
+  tuple v = tuple::create_vector(1.f, 2.f, 3.f);
+  tuple u = tuple::create_vector(2.f, 3.f, 4.f);
+
+  float expected = 20;
+
+  EXPECT_EQ(dot(v, u), expected);
+}
+
+TEST(tuple, Cross) {
+  tuple v = tuple::create_vector(1.f, 2.f, 3.f);
+  tuple u = tuple::create_vector(2.f, 3.f, 4.f);
+
+  tuple expected = tuple::create_vector(-1.0f, 2.0f, -1.0f);
+
+  EXPECT_EQ(cross(v,u), expected);
+
+  expected = tuple::create_vector(1.0f, -2.0f, 1.0f);
+
+  EXPECT_EQ(cross(u, v), expected);
 }
 
 

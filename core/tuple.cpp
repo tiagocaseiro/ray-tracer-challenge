@@ -13,14 +13,14 @@ tuple::tuple(const float a) : x(a), y(a), z(a), w(a)
 
 }
 
-bool tuple::is_point() const
+bool is_point(const tuple& tuple)
 {
-    return equals(w, 1.0f);
+    return equals(tuple.w, 1.0f);
 }
 
-bool tuple::is_vector() const
+bool is_vector(const tuple& tuple)
 {
-    return equals(w, 0.0f);
+    return equals(tuple.w, 0.0f);
 }
 
 tuple tuple::create_point(const float x, const float y, const float z)
@@ -38,50 +38,62 @@ tuple tuple::zero()
     return tuple{0.0f};
 }
 
-bool tuple::operator==(const tuple& other) const
+bool operator==(const tuple& a, const tuple& b)
 {
-    return equals(x, other.x) && 
-           equals(y, other.y) &&
-           equals(z, other.z) &&
-           equals(w, other.w);
+    return equals(a.x, b.x) && 
+           equals(a.y, b.y) &&
+           equals(a.z, b.z) &&
+           equals(a.w, b.w);
 }
 
-tuple tuple::operator+(const tuple& other) const
+tuple operator+(const tuple& a, const tuple& b)
 {
-    return {x+other.x, y+other.y, z+other.z, w+other.w};
+    return {a.x+b.x, a.y+b.y, a.z+b.z, a.w+b.w};
 }
 
-tuple tuple::operator-(const tuple& other) const
+tuple operator-(const tuple& a, const tuple& b)
 {
-    return {x-other.x, y-other.y, z-other.z, w-other.w};
+    return {a.x-b.x, a.y-b.y, a.z-b.z, a.w-b.w};
 }
 
-tuple tuple::operator*(const float scalar) const
+tuple operator*(const tuple& tuple, const float scalar)
 {
- return {x*scalar, y*scalar, z*scalar, w*scalar};
+ return {tuple.x*scalar, tuple.y*scalar, tuple.z*scalar, tuple.w*scalar};
 }
 
-tuple tuple::operator/(const float scalar)  const
+tuple operator*(float scalar, const tuple& tuple)
 {
-    return {x/scalar, y/scalar, z/scalar, w/scalar};
+    return tuple*scalar;
+}
+tuple operator/(const tuple& tuple, const float scalar)
+{
+    return {tuple.x/scalar, tuple.y/scalar, tuple.z/scalar, tuple.w/scalar};
 }
 
-float tuple::length() const
+float length(const tuple& tuple)
 {
-    return std::sqrt(x*x + y*y + z*z + w*w);
+    return std::sqrt(tuple.x*tuple.x + tuple.y*tuple.y + tuple.z*tuple.z + tuple.w*tuple.w);
 }
 
-tuple tuple::normalized() const
+float dot(const tuple& a, const tuple& b)
 {
-    const float l = length();
-    return {x/l, y/l, z/l, w/l};
+    return a.x*b.x + 
+           a.y*b.y + 
+           a.z*b.z + 
+           a.w*b.w;
 }
 
-
-std::ostream& operator<<(std::ostream& os, const tuple& tuple)
+tuple normalized(const tuple& tuple)
 {
-    os << "["<< tuple.x << " " << tuple.y << " " << tuple.z << " " << tuple.w << "]"; 
-    return os;
+    const float l = length(tuple);
+    return {tuple.x/l, tuple.y/l, tuple.z/l, tuple.w/l};
+}
+
+tuple cross(const tuple& a, const tuple& b)
+{
+    return tuple::create_vector(a.y*b.z - a.z * b.y, 
+                         a.z*b.x - a.x * b.z,
+                         a.x*b.y - a.y * b.x);
 }
 
 tuple operator-(const tuple& tuple)
@@ -89,7 +101,11 @@ tuple operator-(const tuple& tuple)
     return tuple*-1;
 }
 
-tuple operator*(float scalar, const tuple& tuple)
+std::ostream& operator<<(std::ostream& os, const tuple& tuple)
 {
-    return tuple*scalar;
+    os << "["<< tuple.x << " " << tuple.y << " " << tuple.z << " " << tuple.w << "]"; 
+    return os;
 }
+
+
+
