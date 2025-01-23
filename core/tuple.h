@@ -18,6 +18,7 @@ struct tuple
 };
 
 bool operator==(const tuple&, const tuple&);
+bool operator!=(const tuple&, const tuple&);
 bool is_point(const tuple&);
 bool is_vector(const tuple&);
     
@@ -29,7 +30,7 @@ tuple operator-(const tuple&, const tuple&);
 tuple operator*(const tuple&, const float);
 tuple operator*(float, const tuple&);
 tuple operator/(const tuple&, const float);
-tuple normalized(const tuple&);
+tuple normalize(const tuple&);
 tuple cross(const tuple&, const tuple&);
 tuple operator-(const tuple&);
 

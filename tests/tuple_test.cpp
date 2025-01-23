@@ -56,7 +56,6 @@ TEST(tuple, Equals)
   EXPECT_EQ(v, u);
 }
 
-
 TEST(tuple, NotEqualsX) {
   tuple v = {0, 2.f, 3.f, 4.f};
   tuple u = {1.f, 2.f, 3.f, 4.f};
@@ -187,11 +186,11 @@ TEST(tuple, Normalize) {
 
   tuple expected = {1.0f, 0.0f, 0.0f, 0.0f};
 
-  EXPECT_EQ(normalized(v), expected);
+  EXPECT_EQ(normalize(v), expected);
   
   v = tuple::create_vector(1.f, 2.f, 3.f);
 
-  tuple n = normalized(v);
+  tuple n = normalize(v);
 
   expected = {1.0f/std::sqrt(14.f), 2.0f/std::sqrt(14.f), 3.0f/std::sqrt(14.f), 0.0f};
 

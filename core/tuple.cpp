@@ -46,6 +46,11 @@ bool operator==(const tuple& a, const tuple& b)
            equals(a.w, b.w);
 }
 
+bool operator!=(const tuple& a, const tuple& b)
+{
+    return !(a == b);
+}
+
 tuple operator+(const tuple& a, const tuple& b)
 {
     return {a.x+b.x, a.y+b.y, a.z+b.z, a.w+b.w};
@@ -83,7 +88,7 @@ float dot(const tuple& a, const tuple& b)
            a.w*b.w;
 }
 
-tuple normalized(const tuple& tuple)
+tuple normalize(const tuple& tuple)
 {
     const float l = length(tuple);
     return {tuple.x/l, tuple.y/l, tuple.z/l, tuple.w/l};
