@@ -38,6 +38,31 @@ tuple tuple::zero()
     return tuple{0.0f};
 }
 
+color::color(const float r, const float g, const float b) : tuple(create_vector(r, g, b))
+{
+    
+}
+
+color::color(const tuple& other) : tuple(other)
+{
+
+}
+
+float& color::red()
+{
+    return x;
+}
+
+float& color::green()
+{
+    return y;
+}
+
+float& color::blue()
+{
+    return z;
+}
+
 bool operator==(const tuple& a, const tuple& b)
 {
     return equals(a.x, b.x) && 

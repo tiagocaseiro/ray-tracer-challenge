@@ -25,7 +25,9 @@ enable_testing()
 add_executable(
   ray-tracer-tests
   tests/tuple_test.cpp
+  tests/color_test.cpp
 )
+
 target_link_libraries(
   ray-tracer-tests
   GTest::gtest_main

@@ -17,6 +17,15 @@ struct tuple
     static tuple zero();
 };
 
+struct color : tuple
+{
+    color(const float, const float, const float);
+    color(const tuple&);
+    float& red();
+    float& green();
+    float& blue();
+};
+
 bool operator==(const tuple&, const tuple&);
 bool operator!=(const tuple&, const tuple&);
 bool is_point(const tuple&);

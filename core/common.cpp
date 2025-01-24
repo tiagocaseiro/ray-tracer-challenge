@@ -3,7 +3,9 @@
 #include <cmath>
 #include <limits>
 
+static constexpr float EPSILON = 0.000001;
+
 bool equals(const float a, const float b)
 {
-    return std::fabs(a-b) < std::numeric_limits<float>::epsilon();
+    return std::abs(a-b) < EPSILON;
 }
