@@ -26,6 +26,7 @@ add_executable(
   ray-tracer-tests
   tests/tuple_test.cpp
   tests/color_test.cpp
+  tests/canvas_test.cpp
 )
 
 target_link_libraries(

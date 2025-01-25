@@ -23,12 +23,12 @@ bool is_vector(const tuple& tuple)
     return equals(tuple.w, 0.0f);
 }
 
-tuple tuple::create_point(const float x, const float y, const float z)
+tuple tuple::make_point(const float x, const float y, const float z)
 {
     return {x, y, z, 1.0f};
 }
 
-tuple tuple::create_vector(const float x, const float y, const float z)
+tuple tuple::make_vector(const float x, const float y, const float z)
 {
     return {x, y, z, 0.0f};
 }
@@ -38,29 +38,34 @@ tuple tuple::zero()
     return tuple{0.0f};
 }
 
-color::color(const float r, const float g, const float b) : tuple(create_vector(r, g, b))
+color::color(const float _r, const float _g, const float _b) : tuple(make_vector(_r, _g, _b))
 {
     
 }
 
-color::color(const tuple& other) : tuple(other)
+color::color(const tuple& t) : tuple(t)
 {
 
+} 
+
+const color& color::black()
+{
+    static color black; 
+    return black;
 }
 
-float& color::red()
+const color& color::red()
 {
-    return x;
+    static color red = {1.0f, 0.0f, 0.0f};
+    return red;
 }
 
-float& color::green()
-{
-    return y;
-}
 
-float& color::blue()
+color operator*(const color& c1, const color& c2) 
 {
-    return z;
+    return {c1.r*c2.r,
+            c1.g*c2.g,
+            c1.b*c2.b};
 }
 
 bool operator==(const tuple& a, const tuple& b)
@@ -121,7 +126,7 @@ tuple normalize(const tuple& tuple)
 
 tuple cross(const tuple& a, const tuple& b)
 {
-    return tuple::create_vector(a.y*b.z - a.z * b.y, 
+    return tuple::make_vector(a.y*b.z - a.z * b.y, 
                          a.z*b.x - a.x * b.z,
                          a.x*b.y - a.y * b.x);
 }

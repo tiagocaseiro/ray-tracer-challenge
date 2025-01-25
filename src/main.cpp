@@ -23,8 +23,8 @@ projectile tick(const environment& env, const projectile& p)
 
 int main()
 {
-    projectile p = {tuple::create_point(0, 1, 0), normalize(tuple::create_vector(1, 1, 0))};
-    environment e = {tuple::create_vector(0, -0.1, 0), tuple::create_vector(-0.01, 0, 0)};
+    projectile p = {tuple::make_point(0, 1, 0), normalize(tuple::make_vector(1, 1, 0))};
+    environment e = {tuple::make_vector(0, -0.1, 0), tuple::make_vector(-0.01, 0, 0)};
 
     while(p.position.y > 0){
         p = tick(e, p);

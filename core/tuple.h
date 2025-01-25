@@ -6,14 +6,15 @@ struct tuple
 {
     tuple(const float, const float, const float, const float);
     explicit tuple(const float);
+    tuple() = default;
 
-    float x = 0.0;
-    float y = 0.0;
-    float z = 0.0;
-    float w = 0.0;
+    union { float x = 0.0, r; };
+    union { float y = 0.0, g; };
+    union { float z = 0.0, b; };
+    union { float w = 0.0, a; };
     
-    static tuple create_point(const float x, const  float y, const float z);
-    static tuple create_vector(const float x, const  float y, const  float z);
+    static tuple make_point(const float x, const  float y, const float z);
+    static tuple make_vector(const float x, const  float y, const  float z);
     static tuple zero();
 };
 
@@ -21,10 +22,13 @@ struct color : tuple
 {
     color(const float, const float, const float);
     color(const tuple&);
-    float& red();
-    float& green();
-    float& blue();
+    color() = default;
+
+    static const color& black();
+    static const color& red();
 };
+
+color operator*(const color&,  const color&);
 
 bool operator==(const tuple&, const tuple&);
 bool operator!=(const tuple&, const tuple&);
