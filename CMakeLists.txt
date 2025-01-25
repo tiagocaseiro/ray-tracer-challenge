@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-project(ray-tracer)
+project(ray-tracer LANGUAGES CXX)
 
 add_executable(ray-tracer src/main.cpp)
 
@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 target_link_libraries(ray-tracer core)
 
 target_include_directories(ray-tracer PUBLIC core)
+
+target_compile_features(ray-tracer PUBLIC cxx_std_20)
 
 include(FetchContent)
 FetchContent_Declare(
