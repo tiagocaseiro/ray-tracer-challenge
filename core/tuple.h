@@ -25,6 +25,7 @@ struct color : tuple
     color() = default;
 
     static const color& black();
+    static const color& white();
     static const color& red();
 };
 

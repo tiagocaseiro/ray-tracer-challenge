@@ -54,12 +54,17 @@ const color& color::black()
     return black;
 }
 
+const color& color::white()
+{
+    static color red = {1.0f, 1.0f, 1.0f};
+    return red;
+}
+
 const color& color::red()
 {
     static color red = {1.0f, 0.0f, 0.0f};
     return red;
 }
-
 
 color operator*(const color& c1, const color& c2) 
 {
