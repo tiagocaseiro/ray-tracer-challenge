@@ -20,7 +20,7 @@ struct canvas
     const std::vector<color>& get_pixels() const;
     
 private:
-    std::vector<color> pixels;
+    std::vector<color> m_pixels;
 };
 
 std::ostream& operator<<(std::ostream& os,const canvas&);
