@@ -15,13 +15,13 @@ TEST(mat4, At)
                    13.5f, 14.5f, 15.5f, 16.5f
                 });
 
-    EXPECT_EQ(mat[0][0], 1);        
-    EXPECT_EQ(mat[0][3], 4);     
-    EXPECT_EQ(mat[1][0], 5.5);        
-    EXPECT_EQ(mat[1][2], 7.5);     
-    EXPECT_EQ(mat[2][2], 11);        
-    EXPECT_EQ(mat[3][0], 13.5);     
-    EXPECT_EQ(mat[3][2], 15.5);  
+    EXPECT_EQ(mat.at(0,0), 1);        
+    EXPECT_EQ(mat.at(0,3), 4);     
+    EXPECT_EQ(mat.at(1,0), 5.5);        
+    EXPECT_EQ(mat.at(1,2), 7.5);     
+    EXPECT_EQ(mat.at(2,2), 11);        
+    EXPECT_EQ(mat.at(3,0), 13.5);     
+    EXPECT_EQ(mat.at(3,2), 15.5);  
 }
 
 TEST(mat2, At) 
@@ -31,10 +31,10 @@ TEST(mat2, At)
                     1.f, -2.f
                 });
 
-    EXPECT_EQ(mat[0][0], -3);        
-    EXPECT_EQ(mat[0][1], 5);     
-    EXPECT_EQ(mat[1][0], 1);        
-    EXPECT_EQ(mat[1][1], -2);
+    EXPECT_EQ(mat.at(0,0), -3);        
+    EXPECT_EQ(mat.at(0,1), 5);     
+    EXPECT_EQ(mat.at(1,0), 1);        
+    EXPECT_EQ(mat.at(1,1), -2);
 }
 
 TEST(mat3, At) 
@@ -45,9 +45,9 @@ TEST(mat3, At)
                    0.f,   1.f,   1.f,
                 });
 
-    EXPECT_EQ(mat[0][0], -3);        
-    EXPECT_EQ(mat[1][1], -2);        
-    EXPECT_EQ(mat[2][2], 1);        
+    EXPECT_EQ(mat.at(0,0), -3);        
+    EXPECT_EQ(mat.at(1,1), -2);        
+    EXPECT_EQ(mat.at(2,2), 1);        
 }
 
 
@@ -150,6 +150,40 @@ TEST(mat4, MultiplicationIdentityTuple)
     tuple t{1, 2, 3, 4};
 
     EXPECT_EQ(mat4::identity()*t, t);    
+}
+
+TEST(mat4, Transpose) 
+{
+    mat4 m({
+                0.f,   9.f,   3.f,   0.f,
+                9.f,   8.f,   0.f,   8.f,
+                1.f,   8.f,   5.f,   3.f,
+                0.f,   0.f,   5.f,   8.f
+            });
+
+    mat4 expected({
+                0.f,   9.f,   1.f,   0.f,
+                9.f,   8.f,   8.f,   0.f,
+                3.f,   0.f,   5.f,   5.f,
+                0.f,   8.f,   3.f,   8.f
+            });
+                
+    EXPECT_EQ(transpose(m),expected);    
+}
+
+TEST(mat4, TransposeIdentity) 
+{
+    EXPECT_EQ(transpose(mat4::identity()),mat4::identity());    
+}
+
+TEST(mat2, Determinant) 
+{
+    mat2 m({
+                   1.f,  5.f,   
+                   -3.f, 2.f
+                });
+
+    EXPECT_EQ(determinant(m), 17.f);    
 }
 
 

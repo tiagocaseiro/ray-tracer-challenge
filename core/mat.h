@@ -18,22 +18,16 @@ struct mat
 
     mat() = default;
     
-    std::span<float> operator[](const size_t x)
+    float& at(const size_t x, const size_t y)
     {
-        auto begin = std::begin(m_data);
-        begin+=(x*n);
-        auto end = begin + n;
-        return {begin, end};
+        return m_data[x*n+y];
     }
 
-    std::span<const float> operator[](const size_t x) const
+    const float at(const size_t x, const size_t y) const 
     {
-        auto begin = std::cbegin(m_data);
-        begin+=(x*n);
-        auto end = begin + n;
-        return {begin, end};    
+        return m_data[x*n+y];
     }
-    
+
     const std::array<float,n*n>& data() const
     {
         return m_data;
@@ -46,7 +40,7 @@ struct mat
             mat<n> id;
             for (int i = 0; i < n; i++)
             {
-                id.m_data[i*n+i] = 1;
+                id.at(i,i) = 1;
             } 
             return id;
         };
@@ -112,12 +106,26 @@ mat<n> operator*(const mat<n>& a, const mat<n>& b)
         {
             for (int k = 0; k != n; k++)
             {
-                new_mat[i][j] += (a[i][k] * b[k][j]);
+                new_mat.at(i,j) += (a.at(i,k) * b.at(k, j));
             }
         }
     }
 
     return new_mat;
+}
+
+template<size_t n>
+mat<n> transpose(const mat<n> m)
+{
+    mat<n> new_m;
+    for (int i = 0; i != n; i++)
+    {
+        for (int j = 0; j != n; j++)
+        {
+            new_m.at(i,j) = m.at(j,i);
+        }
+    }
+    return new_m;
 }
 
 
@@ -129,10 +137,15 @@ using mat2 = mat<2>;
 tuple operator*(const mat4& m, const tuple& t)
 {
     return {
-        m[0][0]*t.x+m[0][1]*t.y+m[0][2]*t.z+m[0][3]*t.w,
-        m[1][0]*t.x+m[1][1]*t.y+m[1][2]*t.z+m[1][3]*t.w,
-        m[2][0]*t.x+m[2][1]*t.y+m[2][2]*t.z+m[2][3]*t.w,
-        m[3][0]*t.x+m[3][1]*t.y+m[3][2]*t.z+m[3][3]*t.w        
+        m.at(0,0)*t.x+m.at(0,1)*t.y+m.at(0,2)*t.z+m.at(0,3)*t.w,
+        m.at(1,0)*t.x+m.at(1,1)*t.y+m.at(1,2)*t.z+m.at(1,3)*t.w,
+        m.at(2,0)*t.x+m.at(2,1)*t.y+m.at(2,2)*t.z+m.at(2,3)*t.w,
+        m.at(3,0)*t.x+m.at(3,1)*t.y+m.at(3,2)*t.z+m.at(3,3)*t.w        
     };
 }
 
+
+float determinant(const mat2& m)
+{
+    return m.at(0,0)*m.at(1,1) - m.at(0,1)*m.at(1,0);
+}
