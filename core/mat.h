@@ -11,25 +11,25 @@
 template<size_t n>
 struct mat
 {
-    explicit constexpr mat(const std::array<float,n*n>& _data) : m_data(_data)
+    explicit mat(const std::array<float,n*n>& _data) : m_data(_data)
     {
     }
 
-    constexpr mat() = default;
+    mat() = default;
     
-    constexpr float& at(const size_t x, const size_t y)
+    float& at(const size_t x, const size_t y)
     {
         return m_data[x*n+y];
     }
 
-    constexpr float at(const size_t x, const size_t y) const 
+    float at(const size_t x, const size_t y) const 
     {
         return m_data[x*n+y];
     }
   
-    static constexpr const mat<n>& identity()
+    static const mat<n>& identity()
     {
-        static constexpr auto init_id = []
+        static auto init_id = []
         {
             std::array<float, n*n> data = {0};
             for (int i = 0; i < n; i++)
@@ -38,7 +38,7 @@ struct mat
             } 
             return data;
         };
-        static constexpr mat<n> id = mat<n>(init_id());
+        static mat<n> id = mat<n>(init_id());
         return id;
     }
 
@@ -75,7 +75,7 @@ bool operator==(const mat<n>& a, const mat<n>& b)
 }
 
 template<size_t n>
-constexpr bool operator!=(const mat<n>& a, const mat<n>& b)
+bool operator!=(const mat<n>& a, const mat<n>& b)
 {
     for (int i = 0; i != n; i++)
     {
@@ -91,7 +91,7 @@ constexpr bool operator!=(const mat<n>& a, const mat<n>& b)
 }
 
 template<size_t n>
-constexpr mat<n> operator*(const mat<n>& a, const mat<n>& b)
+mat<n> operator*(const mat<n>& a, const mat<n>& b)
 {
     mat<n> new_mat;
     
@@ -110,7 +110,7 @@ constexpr mat<n> operator*(const mat<n>& a, const mat<n>& b)
 }
 
 template<size_t n>
-constexpr mat<n> transpose(const mat<n>& m)
+mat<n> transpose(const mat<n>& m)
 {
     mat<n> new_m;
     for (int i = 0; i != n; i++)
@@ -134,7 +134,7 @@ tuple operator*(const mat4& m, const tuple& t)
 }
 
 template<size_t n>
-constexpr float determinant(const mat<n>& m)
+float determinant(const mat<n>& m)
 {
     auto determinant = 0;
     if constexpr (n == 2)
@@ -153,7 +153,7 @@ constexpr float determinant(const mat<n>& m)
 
 
 template<size_t n>
-constexpr mat<n-1> submatrix(const mat<n>& m, const size_t x, const size_t y)
+mat<n-1> submatrix(const mat<n>& m, const size_t x, const size_t y)
 {
     mat<n-1> sub;
 
@@ -182,13 +182,13 @@ constexpr mat<n-1> submatrix(const mat<n>& m, const size_t x, const size_t y)
     return sub;
 }
 
-constexpr float minor(const auto& m, const size_t x, const size_t y)
+float minor(const auto& m, const size_t x, const size_t y)
 {
     return determinant(submatrix(m, x, y));
 }
 
 
-constexpr float cofactor(const auto& m, const size_t x, const size_t y)
+float cofactor(const auto& m, const size_t x, const size_t y)
 {
     auto cofactor = minor(m, x, y);
 
@@ -200,13 +200,13 @@ constexpr float cofactor(const auto& m, const size_t x, const size_t y)
     return cofactor;
 }
 
-constexpr bool is_invertible(const auto& m)
+bool is_invertible(const auto& m)
 {
     return determinant(m) != 0;
 }
 
 template<size_t n>
-constexpr auto inverse(mat<n> m)
+auto inverse(mat<n> m)
 {
     float d = determinant(m);
     if (d == 0)
