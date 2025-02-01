@@ -11,7 +11,7 @@
 template<size_t n>
 struct mat
 {
-    explicit mat(const std::array<float,n*n>& _data = {0}) : m_data(_data)
+    explicit mat(const std::array<float,n*n>& _data = {}) : m_data(_data)
     {
     }
     
@@ -39,7 +39,7 @@ struct mat
     }
 
 private:
-    std::array<float,n*n> m_data = {0};
+    std::array<float,n*n> m_data = {};
 };
 
 using mat4 = mat<4>;
