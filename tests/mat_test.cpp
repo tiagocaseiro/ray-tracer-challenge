@@ -346,7 +346,12 @@ TEST(mat, Inverse3)
 
 }
 
-TEST(mat, InverseMultiplication)
+TEST(mat, InverseIdentity)
+{
+    EXPECT_EQ(inverse(mat4::identity()), mat4::identity());
+}
+
+TEST(mat, InverseMultiplication1)
 {
     
     mat4 m_a({
@@ -368,5 +373,51 @@ TEST(mat, InverseMultiplication)
     mat4 inverted = m_c * inverse(m_b);
 
     EXPECT_EQ(inverted, m_a);
+
+}
+
+TEST(mat, InverseMultiplication2)
+{
+    
+    mat4 m({
+                3.f,  -9.f,  7.f,  3.f,
+                3.f,  -8.f, 2.f, -9.f,
+                -4.f,  4.f, 4.f,  1.f,
+                -6.f,  5.f,  -1.f, 1.f
+            });
+
+    EXPECT_EQ(inverse(m) * m,mat4::identity());
+}
+
+TEST(mat, InverseTranspose)
+{
+    
+    mat4 m({
+                3.f,  -9.f,  7.f,  3.f,
+                3.f,  -8.f, 2.f, -9.f,
+                -4.f,  4.f, 4.f,  1.f,
+                -6.f,  5.f,  -1.f, 1.f
+            });
+
+    EXPECT_EQ(inverse(transpose(m)), transpose(inverse(m)));
+}
+
+TEST(mat, InverseMultiplicationTuple)
+{
+    
+    mat4 m({
+                3.f,  -9.f,  7.f,  3.f,
+                3.f,  -8.f, 2.f, -9.f,
+                -4.f,  4.f, 4.f,  1.f,
+                -6.f,  5.f,  -1.f, 1.f
+            });
+
+    tuple t(1, 2, 3, 4);
+    
+    tuple v =  m * t;
+
+    tuple inverted =  inverse(m) * v;
+
+    EXPECT_EQ(inverted, t);
 
 }
