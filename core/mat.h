@@ -26,17 +26,15 @@ struct mat
     }
   
     static const mat<n>& identity()
-    {
-        static auto init_id = []
-        {
-            std::array<float, n*n> data = {0};
+    {    
+        static const mat<n> id = std::invoke([]{
+            mat<n> m;
             for (int i = 0; i < n; i++)
             {
-                data[i*n+i] = 1;
+                m.m_data[i*n+i] = 1;
             } 
-            return data;
-        };
-        static mat<n> id = mat<n>(init_id());
+            return m;
+        });
         return id;
     }
 
