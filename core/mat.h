@@ -11,63 +11,58 @@
 template<size_t n>
 struct mat
 {
-    explicit mat(const std::array<float,n*n>& _data)
+    explicit constexpr mat(const std::array<float,n*n>& _data) : m_data(_data)
     {
-        std::memcpy(&m_data, &_data, sizeof(decltype(_data)));
     }
 
-    mat() = default;
+    constexpr mat() = default;
     
-    float& at(const size_t x, const size_t y)
+    constexpr float& at(const size_t x, const size_t y)
     {
         return m_data[x*n+y];
     }
 
-    const float at(const size_t x, const size_t y) const 
+    constexpr float at(const size_t x, const size_t y) const 
     {
         return m_data[x*n+y];
     }
-
-    const std::array<float,n*n>& data() const
+  
+    static constexpr const mat<n>& identity()
     {
-        return m_data;
-    }
-    
-    static const mat<n>& identity()
-    {
-        auto init_id = []
+        static constexpr auto init_id = []
         {
-            mat<n> id;
+            std::array<float, n*n> data = {0};
             for (int i = 0; i < n; i++)
             {
-                id.at(i,i) = 1;
+                data[i*n+i] = 1;
             } 
-            return id;
+            return data;
         };
-        static mat<n> id = init_id();
+        static constexpr mat<n> id = mat<n>(init_id());
         return id;
     }
 
 private:
-    std::array<float,n*n>m_data = {0};
+    std::array<float,n*n> m_data = {0};
 };
+
+using mat4 = mat<4>;
+using mat3 = mat<3>;
+using mat2 = mat<2>;
 
 template<size_t n>
 std::ostream& operator<<(std::ostream& os, const mat<n>& mat)
 {
     os << std::fixed << std::setprecision(2);
-    for (int i = 0; i != n*n; i++)
-    {
-        if (i !=0 && i % n == 0)
-        {
-            os << std::endl;
-        }
-        else if (i != 0)
-        {
-            os << " ";
-        }
 
-        os << mat.data()[i];
+    for (int i = 0; i != n; i++)
+    {
+        for (int j = 0; j != n; j++)
+        {
+            os << mat.at(i, j) << " ";
+        }
+        
+        os << std::endl;
     }
 
     return os;
@@ -76,27 +71,27 @@ std::ostream& operator<<(std::ostream& os, const mat<n>& mat)
 template<size_t n>
 bool operator==(const mat<n>& a, const mat<n>& b)
 {
-    return std::ranges::equal(a.data(), b.data(), equals);
+    return (a != b) == false; 
 }
 
 template<size_t n>
-bool operator!=(const mat<n>& a, const mat<n>& b)
+constexpr bool operator!=(const mat<n>& a, const mat<n>& b)
 {
-    int i = 0;
-    for (auto val_a : a.data())
+    for (int i = 0; i != n; i++)
     {
-        auto val_b = b.data()[i];
-        if (equals(val_a, val_b)== false)
+        for (int j = 0; j != n; j++)
         {
-            return true;
+            if (equals(a.at(i,j), b.at(i,j)) == false)
+            {
+                return true;
+            }
         }
-        i++;
     }
     return false;
 }
 
 template<size_t n>
-mat<n> operator*(const mat<n>& a, const mat<n>& b)
+constexpr mat<n> operator*(const mat<n>& a, const mat<n>& b)
 {
     mat<n> new_mat;
     
@@ -115,7 +110,7 @@ mat<n> operator*(const mat<n>& a, const mat<n>& b)
 }
 
 template<size_t n>
-mat<n> transpose(const mat<n> m)
+constexpr mat<n> transpose(const mat<n>& m)
 {
     mat<n> new_m;
     for (int i = 0; i != n; i++)
@@ -128,12 +123,6 @@ mat<n> transpose(const mat<n> m)
     return new_m;
 }
 
-
-using mat4 = mat<4>;
-using mat3 = mat<3>;
-using mat2 = mat<2>;
-
-
 tuple operator*(const mat4& m, const tuple& t)
 {
     return {
@@ -144,8 +133,95 @@ tuple operator*(const mat4& m, const tuple& t)
     };
 }
 
-
-float determinant(const mat2& m)
+template<size_t n>
+constexpr float determinant(const mat<n>& m)
 {
-    return m.at(0,0)*m.at(1,1) - m.at(0,1)*m.at(1,0);
+    auto determinant = 0;
+    if constexpr (n == 2)
+    {
+        determinant = m.at(0,0)*m.at(1,1) - m.at(0,1)*m.at(1,0);
+    }
+    else{
+        for (int j = 0; j != n; j++)
+        {
+            determinant+=(m.at(0,j)*cofactor(m, 0, j));
+        }
+    }
+    
+    return determinant;
+}
+
+
+template<size_t n>
+constexpr mat<n-1> submatrix(const mat<n>& m, const size_t x, const size_t y)
+{
+    mat<n-1> sub;
+
+    auto m_i   = 0; 
+    for (auto sub_i = 0; sub_i != n-1; sub_i++)
+    {
+        if (m_i == x)
+        {
+            m_i++;
+        }
+
+        auto m_j   = 0; 
+        for (auto sub_j = 0; sub_j != n-1; sub_j++)
+        {
+            if (m_j == y)
+            {
+                m_j++;
+            }
+            
+            sub.at(sub_i, sub_j) = m.at(m_i, m_j);
+            m_j++;
+        }
+        m_i++;
+    }
+
+    return sub;
+}
+
+constexpr float minor(const auto& m, const size_t x, const size_t y)
+{
+    return determinant(submatrix(m, x, y));
+}
+
+
+constexpr float cofactor(const auto& m, const size_t x, const size_t y)
+{
+    auto cofactor = minor(m, x, y);
+
+    if ((x+y) % 2 != 0)
+    {
+        cofactor *= -1;
+    }
+
+    return cofactor;
+}
+
+constexpr bool is_invertible(const auto& m)
+{
+    return determinant(m) != 0;
+}
+
+template<size_t n>
+constexpr auto inverse(mat<n> m)
+{
+    float d = determinant(m);
+    if (d == 0)
+    {
+        throw std::domain_error("Attempted to invert a non-invertible matrix");
+    }
+
+    mat<n> m_inverse;
+    for (int i = 0; i != n; i++)
+    {
+       for (int j = 0; j != n; j++)
+        {
+            m_inverse.at(j, i) = cofactor(m, i, j) / d;
+        }     
+    }
+
+    return m_inverse;
 }

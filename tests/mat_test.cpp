@@ -6,52 +6,45 @@
 #include "mat.h"
 #include "tuple.h"
 
-TEST(mat4, At) 
+TEST(mat, At) 
 {
-    mat4 mat({
+    mat4 mat_a({
                    1.f,   2.f,   3.f,   4.f,
                    5.5f,  6.5f,  7.5f,  8.5f,
                    9.f,   10.f,  11.f,  12.f,
                    13.5f, 14.5f, 15.5f, 16.5f
                 });
 
-    EXPECT_EQ(mat.at(0,0), 1);        
-    EXPECT_EQ(mat.at(0,3), 4);     
-    EXPECT_EQ(mat.at(1,0), 5.5);        
-    EXPECT_EQ(mat.at(1,2), 7.5);     
-    EXPECT_EQ(mat.at(2,2), 11);        
-    EXPECT_EQ(mat.at(3,0), 13.5);     
-    EXPECT_EQ(mat.at(3,2), 15.5);  
+    EXPECT_EQ(mat_a.at(0,0), 1);        
+    EXPECT_EQ(mat_a.at(0,3), 4);     
+    EXPECT_EQ(mat_a.at(1,0), 5.5);        
+    EXPECT_EQ(mat_a.at(1,2), 7.5);     
+    EXPECT_EQ(mat_a.at(2,2), 11);        
+    EXPECT_EQ(mat_a.at(3,0), 13.5);     
+    EXPECT_EQ(mat_a.at(3,2), 15.5);  
+
+    mat2 mat_b({
+                -3.f,  5.f,   
+                1.f, -2.f
+            });
+
+    EXPECT_EQ(mat_b.at(0,0), -3);        
+    EXPECT_EQ(mat_b.at(0,1), 5);     
+    EXPECT_EQ(mat_b.at(1,0), 1);        
+    EXPECT_EQ(mat_b.at(1,1), -2);
+
+    mat3 mat_c({
+                -3.f,   5.f,   0.f,
+                1.f,   -2.f,   -7.f,
+                0.f,   1.f,   1.f,
+            });
+
+    EXPECT_EQ(mat_c.at(0,0), -3);        
+    EXPECT_EQ(mat_c.at(1,1), -2);        
+    EXPECT_EQ(mat_c.at(2,2), 1);      
 }
 
-TEST(mat2, At) 
-{
-    mat2 mat({
-                   -3.f,  5.f,   
-                    1.f, -2.f
-                });
-
-    EXPECT_EQ(mat.at(0,0), -3);        
-    EXPECT_EQ(mat.at(0,1), 5);     
-    EXPECT_EQ(mat.at(1,0), 1);        
-    EXPECT_EQ(mat.at(1,1), -2);
-}
-
-TEST(mat3, At) 
-{
-    mat3 mat({
-                   -3.f,   5.f,   0.f,
-                   1.f,   -2.f,   -7.f,
-                   0.f,   1.f,   1.f,
-                });
-
-    EXPECT_EQ(mat.at(0,0), -3);        
-    EXPECT_EQ(mat.at(1,1), -2);        
-    EXPECT_EQ(mat.at(2,2), 1);        
-}
-
-
-TEST(mat4, Equals) 
+TEST(mat, Equals) 
 {
     mat4 mat_a({
                    1.f,   2.f,   3.f,   4.f,
@@ -71,7 +64,7 @@ TEST(mat4, Equals)
     EXPECT_FALSE(mat_a != mat_b);
 }
 
-TEST(mat4, NotEquals) 
+TEST(mat, NotEquals) 
 {
     mat4 mat_a({
                    1.f,   2.f,   3.f,   4.f,
@@ -91,7 +84,7 @@ TEST(mat4, NotEquals)
     EXPECT_TRUE(mat_a != mat_b);
 }
 
-TEST(mat4, Multiplication) 
+TEST(mat, Multiplication) 
 {
     mat4 mat_a({
                    1.f,   2.f,   3.f,   4.f,
@@ -117,7 +110,7 @@ TEST(mat4, Multiplication)
     EXPECT_EQ(mat_a*mat_b, result);    
 }
 
-TEST(mat4, MultiplicationTuple) 
+TEST(mat, MultiplicationTuple) 
 {
     mat4 m({
                    1.f,   2.f,   3.f,   4.f,
@@ -133,7 +126,7 @@ TEST(mat4, MultiplicationTuple)
     EXPECT_EQ(m*t, expected);    
 }
 
-TEST(mat4, MultiplicationIdentity) 
+TEST(mat, MultiplicationIdentity) 
 {
     mat4 m({
                 1.f,   2.f,   3.f,   4.f,
@@ -145,14 +138,14 @@ TEST(mat4, MultiplicationIdentity)
     EXPECT_EQ(m*mat4::identity(), m);    
 }
 
-TEST(mat4, MultiplicationIdentityTuple) 
+TEST(mat, MultiplicationIdentityTuple) 
 {
     tuple t{1, 2, 3, 4};
 
     EXPECT_EQ(mat4::identity()*t, t);    
 }
 
-TEST(mat4, Transpose) 
+TEST(mat, Transpose) 
 {
     mat4 m({
                 0.f,   9.f,   3.f,   0.f,
@@ -171,19 +164,209 @@ TEST(mat4, Transpose)
     EXPECT_EQ(transpose(m),expected);    
 }
 
-TEST(mat4, TransposeIdentity) 
+TEST(mat, TransposeIdentity) 
 {
     EXPECT_EQ(transpose(mat4::identity()),mat4::identity());    
 }
 
-TEST(mat2, Determinant) 
+TEST(mat, Submatrix1) 
 {
-    mat2 m({
-                   1.f,  5.f,   
-                   -3.f, 2.f
-                });
+    mat3 m({
+                1.f,   5.f,   9.f,
+                -3.f,  2.f,  7.f,
+                0.f,   6.f,   -3.f
+            });
 
-    EXPECT_EQ(determinant(m), 17.f);    
+    mat2 expected({
+                -3.f,  2.f,
+                0.f,   6.f
+            });
+                
+    EXPECT_EQ(submatrix(m, 0, 2),expected);    
 }
 
 
+TEST(mat, Submatrix2) 
+{
+    mat4 m({
+                -6.f,   1.f,   1.f,   6.f,
+                -8.f,   5.f,   8.f,   6.f,
+                -1.f,   0.f,   8.f,   2.f,
+                -7.f,   1.f,   -1.f,   1.f
+            });
+
+    mat3 expected({
+                -6.f, 1.f,   6.f,
+                -8.f, 8.f,   6.f,
+                -7.f, -1.f,   1.f
+            });
+
+    EXPECT_EQ(submatrix(m, 2, 1),expected);    
+}
+
+TEST(mat, Minor) 
+{
+    mat3 m({
+                3.f,   5.f,   0.f, 
+                2.f,   -1.f,   -7.f, 
+                6.f,   -1.f,   5.f
+            });
+
+    EXPECT_EQ(determinant(submatrix(m, 1, 0)),25);    
+    EXPECT_EQ(minor(m, 1, 0), 25);    
+}
+
+TEST(mat, Determinant)
+{
+    mat3 m_a({
+                1.f,   2.f,   6.f, 
+                -5.f,   8.f,   -4.f, 
+                2.f,   6.f,   4.f
+            });
+    
+    EXPECT_EQ(cofactor(m_a, 0, 0), 56);    
+    EXPECT_EQ(cofactor(m_a, 0, 1), 12);    
+    EXPECT_EQ(cofactor(m_a, 0, 2), -46);    
+    EXPECT_EQ(determinant(m_a), -196);   
+
+    mat4 m_b({
+            -2.f,   -8.f,   3.f,  5.f,
+            -3.f,   1.f,   7.f,   3.f,
+            1.f,   2.f,   -9.f,   6.f,
+            -6.f,   7.f,  7.f,   -9.f
+        });
+
+    EXPECT_EQ(cofactor(m_b, 0, 0), 690);    
+    EXPECT_EQ(cofactor(m_b, 0, 1), 447);    
+    EXPECT_EQ(cofactor(m_b, 0, 2), 210);    
+    EXPECT_EQ(cofactor(m_b, 0, 3), 51); 
+    EXPECT_EQ(determinant(m_b), -4071);    
+
+    mat2 m_c({
+                1.f,  5.f,   
+                -3.f, 2.f
+            });
+
+    EXPECT_EQ(determinant(m_c), 17.f);  
+    
+}
+
+TEST(mat, Invertible)
+{
+    mat4 m({
+                6.f,   4.f,   4.f,  4.f,
+                5.f,   5.f,   7.f,   6.f,
+                4.f,   -9.f,   3.f,  -7.f,
+                9.f,   1.f,  7.f,   -6.f
+            });
+
+    EXPECT_EQ(determinant(m), -2120);  
+    EXPECT_TRUE(is_invertible(m));        
+}
+
+TEST(mat, NonInvertible)
+{
+    mat4 m({
+                -4.f,   2.f,  -2.f,  -3.f,
+                9.f,   6.f,   2.f,   6.f,
+                4.f,   -5.f,   1.f,  -5.f,
+                0.f,   0.f,  0.f,   0.f
+            });
+
+    EXPECT_EQ(determinant(m), 0);       
+    EXPECT_FALSE(is_invertible(m));       
+    EXPECT_ANY_THROW(inverse(m));       
+}
+
+TEST(mat, Inverse1)
+{
+    mat4 m({
+                -5.f,   2.f,  6.f,  -8.f,
+                1.f,   -5.f,  1.f,   8.f,
+                7.f,   7.f,   -6.f,  -7.f,
+                1.f,   -3.f,  7.f,   4.f
+            });
+
+    mat4 inverted = inverse(m);
+    mat4 expected({
+                0.21805f, 0.45113f,  0.24060f,  -0.04511f,
+                -0.80827f,   -1.45677f,  -0.44361f,   0.52068f,
+                -0.07895f,   -0.22368f,  -0.05263f,  0.19737f,
+                -0.52256f,   -0.81391f,  -0.30075f,   0.30639f
+    });
+    EXPECT_EQ(determinant(m), 532);       
+    EXPECT_EQ(cofactor(m, 2, 3), -160);       
+    EXPECT_EQ(inverted.at(3, 2), -160.f/532.f);      
+    EXPECT_EQ(cofactor(m, 3, 2), 105);       
+    EXPECT_EQ(inverted.at(2, 3), 105.f/532.f);    
+    EXPECT_EQ(inverted, expected);
+}
+
+TEST(mat, Inverse2)
+{
+    mat4 m({
+                8.f,   -5.f,  9.f,  2.f,
+                7.f,   5.f,  6.f,   1.f,
+                -6.f,  0.f,  9.f,  6.f,
+                -3.f,  0.f,  -9.f,  -4.f
+            });
+
+    mat4 inverted = inverse(m);
+
+    mat4 expected({
+            -0.15385f, -0.15385f,  -0.28205f,  -0.53846f,
+            -0.07692f, 0.12308f,  0.02564f,  0.03077f,
+            0.35897f,  0.35897f,  0.43590f,   0.92308f,
+            -0.69231f, -0.69231f, -0.76923f,  -1.92308f
+    });
+
+    EXPECT_EQ(inverted, expected);
+}
+
+TEST(mat, Inverse3)
+{
+    
+    mat4 m({
+                9.f,   3.f,  0.f,  9.f,
+                -5.f,  -2.f, -6.f, -3.f,
+                -4.f,  9.f,  6.f,  4.f,
+                -7.f,  6.f,  6.f,  2.f
+            });
+
+    mat4 inverted = inverse(m);
+
+    mat4 expected({
+            -0.04074f, -0.07778f,  0.14444f,  -0.22222f,
+            -0.07778f, 0.03333f,  0.36667f,  -0.33333f,
+            -0.02901f, -0.14630f, -0.10926f,  0.12963f,
+            0.17778f,  0.06667f, -0.26667f,  0.33333f
+    });
+
+    EXPECT_EQ(inverted, expected);
+
+}
+
+TEST(mat, InverseMultiplication)
+{
+    
+    mat4 m_a({
+                3.f,  -9.f,  7.f,  3.f,
+                3.f,  -8.f, 2.f, -9.f,
+                -4.f,  4.f, 4.f,  1.f,
+                -6.f,  5.f,  -1.f, 1.f
+            });
+
+    mat4 m_b({
+                8.f,  2.f,  2.f,  2.f,
+                3.f,  -1.f, 7.f, 0.f,
+                7.f,  0.f, 5.f,  4.f,
+                6.f,  -2.f,  0.f, 5.f
+            });
+
+    mat4 m_c = m_a * m_b;
+
+    mat4 inverted = m_c * inverse(m_b);
+
+    EXPECT_EQ(inverted, m_a);
+
+}

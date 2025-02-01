@@ -1,7 +1,6 @@
 #include "tuple.h"
 #include "canvas.h"
 
-
 struct projectile
 {
     tuple position;
@@ -32,7 +31,7 @@ int main()
         p = tick(e, p);
         c.paint_pixel(p.position.x, c.height - p.position.y, color::white());
     }
-
+    
     c.save_to_file("result");
     
     return 0;
