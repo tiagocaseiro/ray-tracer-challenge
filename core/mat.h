@@ -11,11 +11,9 @@
 template<size_t n>
 struct mat
 {
-    explicit mat(const std::array<float,n*n>& _data) : m_data(_data)
+    explicit mat(const std::array<float,n*n>& _data = {0}) : m_data(_data)
     {
     }
-
-    mat() = default;
     
     float& at(const size_t x, const size_t y)
     {
@@ -125,7 +123,7 @@ mat<n> transpose(const mat<n>& m)
 
 tuple operator*(const mat4& m, const tuple& t)
 {
-    return {
+    return tuple{
         m.at(0,0)*t.x+m.at(0,1)*t.y+m.at(0,2)*t.z+m.at(0,3)*t.w,
         m.at(1,0)*t.x+m.at(1,1)*t.y+m.at(1,2)*t.z+m.at(1,3)*t.w,
         m.at(2,0)*t.x+m.at(2,1)*t.y+m.at(2,2)*t.z+m.at(2,3)*t.w,

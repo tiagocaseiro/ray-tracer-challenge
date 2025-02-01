@@ -4,9 +4,7 @@
 
 struct tuple
 {
-    tuple(const float, const float, const float, const float);
-    explicit tuple(const float);
-    tuple() = default;
+    explicit tuple(const float _x = 0, const float _y = 0, const float _z = 0, const float _w = 0);
 
     union { float x = 0.0, r; };
     union { float y = 0.0, g; };

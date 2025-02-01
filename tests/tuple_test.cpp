@@ -32,7 +32,7 @@ TEST(tuple, IsVector) {
 
 TEST(tuple, PointFactory) {
   tuple v = tuple::make_point(4.f, -4.f, 3.f);
-  tuple u = {4.f, -4.f, 3.f, 1.f};
+  tuple u = tuple{4.f, -4.f, 3.f, 1.f};
 
   EXPECT_EQ (v, u);
   EXPECT_TRUE(is_point(v));
@@ -41,7 +41,7 @@ TEST(tuple, PointFactory) {
 
 TEST(tuple, VectorFactory) {
   tuple v = tuple::make_vector(4.f, -4.f, 3.f);
-  tuple u = {4.f, -4.f, 3.f, 0.f};
+  tuple u = tuple{4.f, -4.f, 3.f, 0.f};
 
   EXPECT_EQ (v, u);
   EXPECT_TRUE(is_vector(v));
@@ -51,52 +51,52 @@ TEST(tuple, VectorFactory) {
 
 TEST(tuple, Equals) 
 {
-  tuple v = {1.f, 2.f, 3.f, 4.f};
-  tuple u = {1.f, 2.f, 3.f, 4.f};
+  tuple v = tuple{1.f, 2.f, 3.f, 4.f};
+  tuple u = tuple{1.f, 2.f, 3.f, 4.f};
 
   EXPECT_EQ(v, u);
 }
 
 TEST(tuple, NotEqualsX) {
-  tuple v = {0, 2.f, 3.f, 4.f};
-  tuple u = {1.f, 2.f, 3.f, 4.f};
+  tuple v = tuple{0, 2.f, 3.f, 4.f};
+  tuple u = tuple{1.f, 2.f, 3.f, 4.f};
 
   EXPECT_NE(v, u);
 }
 
 TEST(tuple, NotEqualsY) {
-  tuple v = {1.f, 2.f, 3.f, 4.f};
-  tuple u = {1.f, 1.f, 3.f, 4.f};
+  tuple v = tuple{1.f, 2.f, 3.f, 4.f};
+  tuple u = tuple{1.f, 1.f, 3.f, 4.f};
 
   EXPECT_NE(v, u);
 }
 
 TEST(tuple, NotEqualsZ) {
-  tuple v = {1.f, 2.f, 1.f, 4.f};
-  tuple u = {1.f, 2.f, 3.f, 4.f};
+  tuple v = tuple{1.f, 2.f, 1.f, 4.f};
+  tuple u = tuple{1.f, 2.f, 3.f, 4.f};
 
   EXPECT_NE(v, u);
 }
 
 TEST(tuple, NotEqualsW) {
-  tuple v = {1.f, 2.f, 3.f, 1.f};
-  tuple u = {1.f, 2.f, 3.f, 4.f};
+  tuple v = tuple{1.f, 2.f, 3.f, 1.f};
+  tuple u = tuple{1.f, 2.f, 3.f, 4.f};
 
   EXPECT_NE(v, u);
 }
 
 TEST(tuple, NotEqualsAll) {
-  tuple v = {4.f, 3.f, 2.f, 1.f};
-  tuple u = {1.f, 2.f, 3.f, 4.f};
+  tuple v = tuple{4.f, 3.f, 2.f, 1.f};
+  tuple u = tuple{1.f, 2.f, 3.f, 4.f};
 
   EXPECT_NE(v, u);
 }
 
 TEST(tuple, Addition) {
-  tuple v = {3.f, -2.f, 5.f, 1.f};
-  tuple u = {-2.f, 3.f, 1.f, 0.f};
+  tuple v = tuple{3.f, -2.f, 5.f, 1.f};
+  tuple u = tuple{-2.f, 3.f, 1.f, 0.f};
 
-  tuple expected = {1.f, 1.f, 6.f, 1.f};
+  tuple expected = tuple{1.f, 1.f, 6.f, 1.f};
 
   EXPECT_EQ(expected, v+u);
 }
@@ -129,33 +129,33 @@ TEST(tuple, Subraction) {
 
   EXPECT_EQ(expected, v-u);
 
-  v = {1.f, -2.f, 3.f, -4.f};
+  v = tuple{1.f, -2.f, 3.f, -4.f};
 
-  expected = {-1.f, 2.f, -3.f, 4.f};
+  expected = tuple{-1.f, 2.f, -3.f, 4.f};
 
   EXPECT_EQ(expected, -v);
 }
 
 TEST(tuple, Multiplication) {
-  tuple v = {1.f, -2.f, 3.f, -4.f};
+  tuple v = tuple{1.f, -2.f, 3.f, -4.f};
 
-  tuple expected = {3.5f, -7.f, 10.5f, -14.f};
+  tuple expected = tuple{3.5f, -7.f, 10.5f, -14.f};
 
   EXPECT_EQ(expected, v*3.5f);
   EXPECT_EQ(expected, 3.5f*v);
 
-  v = {1.f, -2.f, 3.f, -4.f};
+  v = tuple{1.f, -2.f, 3.f, -4.f};
 
-  expected = {0.5, -1.f, 1.5f, -2.f};
+  expected = tuple{0.5, -1.f, 1.5f, -2.f};
 
   EXPECT_EQ(expected, v*0.5f);
   EXPECT_EQ(expected, 0.5f*v);
 }
 
 TEST(tuple, Division) {
-  tuple v = {1.f, -2.f, 3.f, -4.f};
+  tuple v = tuple{1.f, -2.f, 3.f, -4.f};
 
-  tuple expected = {0.5, -1.f, 1.5f, -2.f};
+  tuple expected = tuple{0.5, -1.f, 1.5f, -2.f};
 
   EXPECT_EQ(expected, v/2.f);
 }
@@ -185,7 +185,7 @@ TEST(tuple, Length) {
 TEST(tuple, Normalize) {
   tuple v = tuple::make_vector(4.f, 0.f, 0.f);
 
-  tuple expected = {1.0f, 0.0f, 0.0f, 0.0f};
+  tuple expected = tuple{1.0f, 0.0f, 0.0f, 0.0f};
 
   EXPECT_EQ(normalize(v), expected);
   
@@ -193,7 +193,7 @@ TEST(tuple, Normalize) {
 
   tuple n = normalize(v);
 
-  expected = {1.0f/std::sqrt(14.f), 2.0f/std::sqrt(14.f), 3.0f/std::sqrt(14.f), 0.0f};
+  expected = tuple{1.0f/std::sqrt(14.f), 2.0f/std::sqrt(14.f), 3.0f/std::sqrt(14.f), 0.0f};
 
   EXPECT_EQ(n, expected);
 

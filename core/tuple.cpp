@@ -8,11 +8,6 @@ tuple::tuple(const float _x, const float _y, const float _z, const float _w) : x
 {
 }
 
-tuple::tuple(const float a) : x(a), y(a), z(a), w(a)
-{
-
-}
-
 bool is_point(const tuple& tuple)
 {
     return equals(tuple.w, 1.0f);
@@ -25,17 +20,17 @@ bool is_vector(const tuple& tuple)
 
 tuple tuple::make_point(const float x, const float y, const float z)
 {
-    return {x, y, z, 1.0f};
+    return tuple(x, y, z, 1.0f);
 }
 
 tuple tuple::make_vector(const float x, const float y, const float z)
 {
-    return {x, y, z, 0.0f};
+    return tuple(x, y, z, 0.0f);
 }
 
 tuple tuple::zero()
 {
-    return tuple{0.0f};
+    return tuple();
 }
 
 color::color(const float _r, const float _g, const float _b) : tuple(make_vector(_r, _g, _b))
@@ -88,26 +83,26 @@ bool operator!=(const tuple& a, const tuple& b)
 
 tuple operator+(const tuple& a, const tuple& b)
 {
-    return {a.x+b.x, a.y+b.y, a.z+b.z, a.w+b.w};
+    return tuple{a.x+b.x, a.y+b.y, a.z+b.z, a.w+b.w};
 }
 
 tuple operator-(const tuple& a, const tuple& b)
 {
-    return {a.x-b.x, a.y-b.y, a.z-b.z, a.w-b.w};
+    return tuple{a.x-b.x, a.y-b.y, a.z-b.z, a.w-b.w};
 }
 
-tuple operator*(const tuple& tuple, const float scalar)
+tuple operator*(const tuple& t, const float scalar)
 {
- return {tuple.x*scalar, tuple.y*scalar, tuple.z*scalar, tuple.w*scalar};
+    return tuple{t.x*scalar, t.y*scalar, t.z*scalar, t.w*scalar};
 }
 
 tuple operator*(float scalar, const tuple& tuple)
 {
     return tuple*scalar;
 }
-tuple operator/(const tuple& tuple, const float scalar)
+tuple operator/(const tuple& t, const float scalar)
 {
-    return {tuple.x/scalar, tuple.y/scalar, tuple.z/scalar, tuple.w/scalar};
+    return tuple{t.x/scalar, t.y/scalar, t.z/scalar, t.w/scalar};
 }
 
 float length(const tuple& tuple)
@@ -123,10 +118,10 @@ float dot(const tuple& a, const tuple& b)
            a.w*b.w;
 }
 
-tuple normalize(const tuple& tuple)
+tuple normalize(const tuple& t)
 {
-    const float l = length(tuple);
-    return {tuple.x/l, tuple.y/l, tuple.z/l, tuple.w/l};
+    const float l = length(t);
+    return tuple(t.x/l, t.y/l, t.z/l, t.w/l);
 }
 
 tuple cross(const tuple& a, const tuple& b)
