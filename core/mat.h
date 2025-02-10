@@ -221,3 +221,26 @@ auto inverse(mat<n> m)
 
     return m_inverse;
 }
+
+mat4 translate(float x, float y, float z)
+{
+    auto mat = mat4::identity();
+    mat.at(0,3) = x;
+    mat.at(1,3) = y;
+    mat.at(2,3) = z;
+    return mat;
+}
+
+mat4 scale(float x, float y, float z)
+{
+    auto mat = mat4::identity();
+    mat.at(0,0) = x;
+    mat.at(1,1) = y;
+    mat.at(2,2) = z;
+    return mat;
+}
+
+mat4 scale(float s)
+{
+    return scale(s,s,s);
+}

@@ -419,5 +419,74 @@ TEST(mat, InverseMultiplicationTuple)
     tuple inverted =  inverse(m) * v;
 
     EXPECT_EQ(inverted, t);
+}
 
+TEST(mat, TranslationPoint)
+{
+    auto m = translate(5, -3, 2);
+    auto p = tuple::make_point(-3, 4, 5);
+    
+    auto q = m*p;
+
+    EXPECT_EQ(q, tuple::make_point(2, 1, 7));
+}
+
+TEST(mat, TranslationPointInverse)
+{
+    auto m = inverse(translate(5, -3, 2));
+    auto p = tuple::make_point(-3, 4, 5);
+    
+    auto q = m*p;
+
+    EXPECT_EQ(q, tuple::make_point(-8, 7, 3));
+}
+
+TEST(mat, TranslationVector)
+{
+    auto m = inverse(translate(5, -3, 2));
+    auto p = tuple::make_vector(-3, 4, 5);
+    
+    auto q = m*p;
+
+    EXPECT_EQ(q, p);
+}
+
+TEST(mat, ScalePoint)
+{
+    auto m = scale(2, 3, 4);
+    auto p = tuple::make_point(-4, 6, 8);
+    
+    auto q = m*p;
+
+    EXPECT_EQ(q, tuple::make_point(-8, 18, 32));
+}
+
+TEST(mat, ScaleVector)
+{
+    auto m = scale(2, 3, 4);
+    auto p = tuple::make_vector(-4, 6, 8);
+    
+    auto q = m*p;
+
+    EXPECT_EQ(q, tuple::make_vector(-8, 18, 32));
+}
+
+TEST(mat, ScaleVectorInverse)
+{
+    auto m = inverse(scale(2, 3, 4));
+    auto p = tuple::make_vector(-4, 6, 8);
+    
+    auto q = m*p;
+
+    EXPECT_EQ(q, tuple::make_vector(-2, 2, 2));
+}
+
+TEST(mat, ReflectPoint)
+{
+    auto m = scale(-1, 1, 1);
+    auto p = tuple::make_point(2, 3, 4);
+    
+    auto q = m*p;
+
+    EXPECT_EQ(q, tuple::make_point(-2, 3, 4));
 }
