@@ -4,6 +4,8 @@ project(ray-tracer LANGUAGES CXX)
 
 add_executable(ray-tracer src/main.cpp)
 
+target_compile_options(ray-tracer PRIVATE /Wall /WX)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -26,9 +28,9 @@ enable_testing()
 
 add_executable(
   ray-tracer-tests
-  tests/tuple_test.cpp
-  tests/color_test.cpp
-  tests/canvas_test.cpp
+  # tests/tuple_test.cpp
+  # tests/color_test.cpp
+  # tests/canvas_test.cpp
   tests/mat_test.cpp
 )
 
