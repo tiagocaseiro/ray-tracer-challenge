@@ -511,3 +511,25 @@ TEST(mat, RotationXInverse)
 
     EXPECT_EQ(half_quarter_inverse*p, tuple::make_point(0, std::sqrt(2)/2, -std::sqrt(2)/2));
 }
+
+TEST(mat, RotationY)
+{
+    auto p = tuple::make_point(0, 0, 1);
+
+    auto half_quarter = rotation_y(std::numbers::pi/4);
+    auto full_quarter = rotation_y(std::numbers::pi/2);
+
+    EXPECT_EQ(half_quarter*p, tuple::make_point(std::sqrt(2)/2, 0 , std::sqrt(2)/2));
+    EXPECT_EQ(full_quarter*p, tuple::make_point(1, 0, 0));
+}
+
+TEST(mat, RotationZ)
+{
+    auto p = tuple::make_point(0, 1, 0);
+
+    auto half_quarter = rotation_z(std::numbers::pi/4);
+    auto full_quarter = rotation_z(std::numbers::pi/2);
+
+    EXPECT_EQ(half_quarter*p, tuple::make_point(-std::sqrt(2)/2, std::sqrt(2)/2, 0 ));
+    EXPECT_EQ(full_quarter*p, tuple::make_point(-1, 0, 0));
+}

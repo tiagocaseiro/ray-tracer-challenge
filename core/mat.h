@@ -256,3 +256,27 @@ mat4 rotation_x(float angle_radians)
 
     return mat;
 }
+
+mat4 rotation_y(float angle_radians)
+{
+    auto mat = mat4::identity();
+    
+    mat.at(0,0) = std::cos(angle_radians);
+    mat.at(0,2) = std::sin(angle_radians);
+    mat.at(2,0) = -std::sin(angle_radians);
+    mat.at(2,2) = std::cos(angle_radians);
+
+    return mat;
+}
+
+mat4 rotation_z(float angle_radians)
+{
+    auto mat = mat4::identity();
+    
+    mat.at(0,0) = std::cos(angle_radians);
+    mat.at(0,1) = -std::sin(angle_radians);
+    mat.at(1,0) = std::sin(angle_radians);
+    mat.at(1,1) = std::cos(angle_radians);
+
+    return mat;
+}
