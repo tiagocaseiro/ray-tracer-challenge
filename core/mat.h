@@ -15,12 +15,12 @@ struct mat
     {
     }
     
-    float& at(const size_t x, const size_t y)
+    [[nodiscard]] float& at(const size_t x, const size_t y)
     {
         return m_data[x*n+y];
     }
 
-    float at(const size_t x, const size_t y) const 
+    [[nodiscard]] float at(const size_t x, const size_t y) const 
     {
         return m_data[x*n+y];
     }
@@ -132,10 +132,10 @@ tuple operator*(const mat4& m, const tuple& t)
 template<size_t n>
 float determinant(const mat<n>& m)
 {
-    auto determinant = 0;
+    float determinant = 0.f;
     if constexpr (n == 2)
     {
-        determinant = m.at(0,0)*m.at(1,1) - m.at(0,1)*m.at(1,0);
+        determinant = m.at(0,0)*m.at(1,1) - m.at(0,1) * m.at(1,0);
     }
     else{
         for (int j = 0; j != n; j++)
@@ -243,4 +243,16 @@ mat4 scale(float x, float y, float z)
 mat4 scale(float s)
 {
     return scale(s,s,s);
+}
+
+mat4 rotation_x(float angle_radians)
+{
+    auto mat = mat4::identity();
+    
+    mat.at(1,1) = std::cos(angle_radians);
+    mat.at(1,2) = -std::sin(angle_radians);
+    mat.at(2,1) = std::sin(angle_radians);
+    mat.at(2,2) = std::cos(angle_radians);
+
+    return mat;
 }

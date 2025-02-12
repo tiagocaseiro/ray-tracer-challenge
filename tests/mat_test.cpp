@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <fstream>
+#include <numbers>
 
 #include "mat.h"
 #include "tuple.h"
@@ -489,4 +490,24 @@ TEST(mat, ReflectPoint)
     auto q = m*p;
 
     EXPECT_EQ(q, tuple::make_point(-2, 3, 4));
+}
+
+TEST(mat, RotationX)
+{
+    auto p = tuple::make_point(0, 1, 0);
+
+    auto half_quarter = rotation_x(std::numbers::pi/4);
+    auto full_quarter = rotation_x(std::numbers::pi/2);
+
+    EXPECT_EQ(half_quarter*p, tuple::make_point(0, std::sqrt(2)/2, std::sqrt(2)/2));
+    EXPECT_EQ(full_quarter*p, tuple::make_point(0, 0, 1));
+}
+
+TEST(mat, RotationXInverse)
+{
+    auto p = tuple::make_point(0, 1, 0);
+
+    auto half_quarter_inverse = inverse(rotation_x(std::numbers::pi/4));
+
+    EXPECT_EQ(half_quarter_inverse*p, tuple::make_point(0, std::sqrt(2)/2, -std::sqrt(2)/2));
 }
