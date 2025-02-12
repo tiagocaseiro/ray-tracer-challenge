@@ -24,15 +24,15 @@ int main()
 {
     canvas c = {900, 550};
     projectile p = {tuple::make_point(0.0f, 1.0f, 0.0f), normalize(tuple::make_vector(1.0f, 1.8f, 0.0f))* 11.25f};
-    environment e = {tuple::make_vector(0.0f, -0.1f, 0.0f), tuple::make_vector(-0.01, 0.0f, 0.0f)};
+    environment e = {tuple::make_vector(0.0f, -0.1f, 0.0f), tuple::make_vector(-0.01f, 0.0f, 0.0f)};
 
-    c.paint_pixel(p.position.x, c.height - p.position.y, color::white());
-    while(p.position.y > 0){
-        p = tick(e, p);
-        c.paint_pixel(p.position.x, c.height - p.position.y, color::white());
-    }
+    // c.paint_pixel(p.position.x, c.height - p.position.y, color::white());
+    // while(p.position.y > 0){
+    //     p = tick(e, p);
+    //     c.paint_pixel(p.position.x, c.height - p.position.y, color::white());
+    // }
     
-    c.save_to_file("result");
+    // c.save_to_file("result");
     
     return 0;
 }
