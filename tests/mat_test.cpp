@@ -7,6 +7,7 @@
 #include "mat.h"
 #include "tuple.h"
 
+using namespace std::numbers;
 TEST(mat, At) 
 {
     mat4 mat_a({
@@ -496,8 +497,8 @@ TEST(mat, RotationX)
 {
     auto p = tuple::make_point(0, 1, 0);
 
-    auto half_quarter = rotation_x(std::numbers::pi/4);
-    auto full_quarter = rotation_x(std::numbers::pi/2);
+    auto half_quarter = rotation_x(pi/4);
+    auto full_quarter = rotation_x(pi/2);
 
     EXPECT_EQ(half_quarter*p, tuple::make_point(0, std::sqrt(2)/2, std::sqrt(2)/2));
     EXPECT_EQ(full_quarter*p, tuple::make_point(0, 0, 1));
@@ -507,7 +508,7 @@ TEST(mat, RotationXInverse)
 {
     auto p = tuple::make_point(0, 1, 0);
 
-    auto half_quarter_inverse = inverse(rotation_x(std::numbers::pi/4));
+    auto half_quarter_inverse = inverse(rotation_x(pi/4));
 
     EXPECT_EQ(half_quarter_inverse*p, tuple::make_point(0, std::sqrt(2)/2, -std::sqrt(2)/2));
 }
@@ -516,8 +517,8 @@ TEST(mat, RotationY)
 {
     auto p = tuple::make_point(0, 0, 1);
 
-    auto half_quarter = rotation_y(std::numbers::pi/4);
-    auto full_quarter = rotation_y(std::numbers::pi/2);
+    auto half_quarter = rotation_y(pi/4);
+    auto full_quarter = rotation_y(pi/2);
 
     EXPECT_EQ(half_quarter*p, tuple::make_point(std::sqrt(2)/2, 0 , std::sqrt(2)/2));
     EXPECT_EQ(full_quarter*p, tuple::make_point(1, 0, 0));
@@ -527,8 +528,8 @@ TEST(mat, RotationZ)
 {
     auto p = tuple::make_point(0, 1, 0);
 
-    auto half_quarter = rotation_z(std::numbers::pi/4);
-    auto full_quarter = rotation_z(std::numbers::pi/2);
+    auto half_quarter = rotation_z(pi/4);
+    auto full_quarter = rotation_z(pi/2);
 
     EXPECT_EQ(half_quarter*p, tuple::make_point(-std::sqrt(2)/2, std::sqrt(2)/2, 0 ));
     EXPECT_EQ(full_quarter*p, tuple::make_point(-1, 0, 0));
@@ -586,4 +587,36 @@ TEST(mat, ShearingZToY)
     auto mat = shearing_z(0, 1);
 
     EXPECT_EQ(mat*p, tuple::make_point(2, 3, 7));
+}
+
+TEST(mat, IndividualTransform)
+{
+    auto p = tuple::make_point(1, 0, 1);
+
+    auto mat_a = rotation_x(pi/2);
+    auto mat_b = scale(5, 5, 5);
+    auto mat_c = translate(10, 5, 7) ;
+
+    p = mat_a * p;
+    EXPECT_EQ(p, tuple::make_point(1, -1, 0));
+
+    p = mat_b * p;
+    EXPECT_EQ(p, tuple::make_point(5, -5, 0));
+
+    p = mat_c * p;
+    EXPECT_EQ(p, tuple::make_point(15, 0, 7));
+}
+
+TEST(mat, ChainedTransform)
+{
+    auto p = tuple::make_point(1, 0, 1);
+
+    auto mat_a = rotation_x(pi/2);
+    auto mat_b = scale(5, 5, 5);
+    auto mat_c = translate(10, 5, 7);
+
+    auto mat = mat_c * mat_b * mat_a;
+
+    p = mat * p;
+    EXPECT_EQ(p, tuple::make_point(15, 0, 7));
 }
