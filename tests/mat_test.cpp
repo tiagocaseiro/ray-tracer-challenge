@@ -533,3 +533,57 @@ TEST(mat, RotationZ)
     EXPECT_EQ(half_quarter*p, tuple::make_point(-std::sqrt(2)/2, std::sqrt(2)/2, 0 ));
     EXPECT_EQ(full_quarter*p, tuple::make_point(-1, 0, 0));
 }
+
+TEST(mat, ShearingXToY)
+{
+    auto p = tuple::make_point(2, 3, 4);
+
+    auto mat = shearing_x(1, 0);
+
+    EXPECT_EQ(mat*p, tuple::make_point(5, 3, 4));
+}
+
+TEST(mat, ShearingXToZ)
+{
+    auto p = tuple::make_point(2, 3, 4);
+
+    auto mat = shearing_x(0, 1);
+
+    EXPECT_EQ(mat*p, tuple::make_point(6, 3, 4));
+}
+
+TEST(mat, ShearingYToX)
+{
+    auto p = tuple::make_point(2, 3, 4);
+
+    auto mat = shearing_y(1, 0);
+
+    EXPECT_EQ(mat*p, tuple::make_point(2, 5, 4));
+}
+
+TEST(mat, ShearingYToZ)
+{
+    auto p = tuple::make_point(2, 3, 4);
+
+    auto mat = shearing_y(0, 1);
+
+    EXPECT_EQ(mat*p, tuple::make_point(2, 7, 4));
+}
+
+TEST(mat, ShearingZToX)
+{
+    auto p = tuple::make_point(2, 3, 4);
+
+    auto mat = shearing_z(1, 0);
+
+    EXPECT_EQ(mat*p, tuple::make_point(2, 3, 6));
+}
+
+TEST(mat, ShearingZToY)
+{
+    auto p = tuple::make_point(2, 3, 4);
+
+    auto mat = shearing_z(0, 1);
+
+    EXPECT_EQ(mat*p, tuple::make_point(2, 3, 7));
+}

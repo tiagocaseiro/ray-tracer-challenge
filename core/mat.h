@@ -280,3 +280,27 @@ mat4 rotation_z(float angle_radians)
 
     return mat;
 }
+
+mat4 shearing_x(float y, float z)
+{
+    auto mat = mat4::identity();
+    mat.at(0,1) = y;
+    mat.at(0,2) = z;
+    return mat;
+}
+
+mat4 shearing_y(float x, float z)
+{
+    auto mat = mat4::identity();
+    mat.at(1,0) = x;
+    mat.at(1,2) = z;
+    return mat;
+}
+
+mat4 shearing_z(float x, float y)
+{
+    auto mat = mat4::identity();
+    mat.at(2,0) = x;
+    mat.at(2,1) = y;
+    return mat;
+}
