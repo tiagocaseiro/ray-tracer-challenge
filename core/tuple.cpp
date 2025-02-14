@@ -61,6 +61,24 @@ const color& color::red()
     return red;
 }
 
+const color& color::green()
+{
+    static color green = {0.0f, 1.0f, 0.0f};
+    return green;
+}
+
+const color& color::blue()
+{
+    static color blue = {0.0f, 0.0f, 1.0f};
+    return blue;
+}
+
+const color& color::yellow()
+{
+    static color yellow = {1.0f, 1.0f, 0.0f};
+    return yellow;
+}
+
 color operator*(const color& c1, const color& c2) 
 {
     return {c1.r*c2.r,

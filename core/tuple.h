@@ -11,8 +11,8 @@ struct tuple
     union { float z = 0.0, b; };
     union { float w = 0.0, a; };
     
-    static tuple make_point(const float x, const  float y, const float z);
-    static tuple make_vector(const float x, const  float y, const  float z);
+    static tuple make_point(const float x = 0, const  float y = 0, const float z = 0);
+    static tuple make_vector(const float x = 0, const  float y = 0, const  float z = 0);
     static tuple zero();
 };
 
@@ -25,6 +25,10 @@ struct color : tuple
     static const color& black();
     static const color& white();
     static const color& red();
+    static const color& green();
+    static const color& blue();
+    static const color& yellow();
+
 };
 
 color operator*(const color&,  const color&);
