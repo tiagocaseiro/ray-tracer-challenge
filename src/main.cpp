@@ -1,38 +1,87 @@
+#include <numbers>
+#include <chrono>
+
 #include "tuple.h"
 #include "canvas.h"
+#include "mat.h"
 
-struct projectile
-{
-    tuple position;
-    tuple velocity;
-};
+using namespace std::numbers;
 
-struct environment
-{
-    tuple gravity;
-    tuple wind;
-};
+static const auto to_the_center  = translate(200, 200, 0);
+static const auto two_pi = 2.f*static_cast<float>(pi);
+static const auto radius = 50;
 
-projectile tick(const environment& env, const projectile& p)
+void draw_hour_points(canvas& c)
 {
-    tuple new_position = p.position + p.velocity;
-    tuple new_velocity = p.velocity + env.gravity + env.wind;
-    return {new_position, new_velocity};
+    static const auto to_the_right  = translate(radius, 0, 0);
+    for (auto i = 0; i != 12; i++)
+    {
+        static const auto step = two_pi/12.f;
+        const auto rotation = rotate_z(step*static_cast<float>(i));
+        auto p = tuple::make_point();
+        p = to_the_center * rotation * to_the_right *p;
+        c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::white());
+    }
+}
+
+void draw_minute_points(canvas& c)
+{
+    static const auto to_the_right  = translate(radius, 0, 0);
+    for (auto i = 0; i != 60; i++)
+    {
+        static const auto step = two_pi/60.f;
+        const auto rotation = rotate_z(step*static_cast<float>(i));
+        auto p = tuple::make_point();
+        p = to_the_center * rotation * to_the_right *p;
+        c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::green());
+    }
+}
+
+void draw_hour_hand(canvas& c, const std::chrono::hours& hours, const std::chrono::minutes& )
+{
+    for(auto i = 0; i != radius; i++)
+    {
+        auto go_up = translate(0, static_cast<float>(-i), 0);
+        auto rotation = rotate_z(1.f/12.f * static_cast<float>(hours.count())*two_pi);
+        auto p = tuple::make_point();
+        p = to_the_center * rotation * go_up *p;
+        c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::blue());
+    }
+}
+
+
+void draw_minutes_hand(canvas& c, const std::chrono::minutes& minutes)
+{
+    for(auto i = 0; i != radius; i++)
+    {
+        auto go_up = translate(0, static_cast<float>(-i), 0);
+        auto rotation = rotate_z(1.f/60.f * static_cast<float>(minutes.count())*two_pi);
+        auto p = tuple::make_point();
+        p = to_the_center * rotation * go_up *p;
+        c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::yellow());
+    }
 }
 
 int main()
 {
-    canvas c = {900, 550};
-    projectile p = {tuple::make_point(0.0f, 1.0f, 0.0f), normalize(tuple::make_vector(1.0f, 1.8f, 0.0f))* 11.25f};
-    environment e = {tuple::make_vector(0.0f, -0.1f, 0.0f), tuple::make_vector(-0.01f, 0.0f, 0.0f)};
+    canvas c = {400, 400};
 
-    // c.paint_pixel(p.position.x, c.height - p.position.y, color::white());
-    // while(p.position.y > 0){
-    //     p = tick(e, p);
-    //     c.paint_pixel(p.position.x, c.height - p.position.y, color::white());
-    // }
-    
-    // c.save_to_file("result");
+    std::chrono::time_point now = std::chrono::system_clock::now();
+    std::chrono::hh_mm_ss time_of_day{now - std::chrono::floor<std::chrono::days>(now)};
+
+    draw_minute_points(c);
+    draw_hour_points(c);
+
+    draw_hour_hand(c, time_of_day.hours(), time_of_day.minutes());
+    draw_minutes_hand(c, time_of_day.minutes());
+    {
+        auto p = tuple::make_point();
+        p =  to_the_center * p;
+        c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::red());
+    }
+
+   
+    c.save_to_file("result");
     
     return 0;
 }
