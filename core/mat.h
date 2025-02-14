@@ -1,5 +1,8 @@
 #pragma once
 
+// Disable Spectre related warning
+#pragma warning(disable :5045)
+
 #include <span>
 #include <array>
 #include <algorithm>
@@ -29,7 +32,7 @@ struct mat
     {    
         static const mat<n> id = std::invoke([]{
             mat<n> m;
-            for (int i = 0; i < n; i++)
+            for (size_t i = 0; i < n; i++)
             {
                 m.m_data[i*n+i] = 1;
             } 
@@ -51,9 +54,9 @@ std::ostream& operator<<(std::ostream& os, const mat<n>& mat)
 {
     os << std::fixed << std::setprecision(2);
 
-    for (int i = 0; i != n; i++)
+    for (size_t i = 0; i != n; i++)
     {
-        for (int j = 0; j != n; j++)
+        for (size_t j = 0; j != n; j++)
         {
             os << mat.at(i, j) << " ";
         }
@@ -91,11 +94,11 @@ mat<n> operator*(const mat<n>& a, const mat<n>& b)
 {
     mat<n> new_mat;
     
-    for (int i = 0; i != n; i++)
+    for (size_t i = 0; i != n; i++)
     {
-        for (int j = 0; j != n; j++)
+        for (size_t j = 0; j != n; j++)
         {
-            for (int k = 0; k != n; k++)
+            for (size_t k = 0; k != n; k++)
             {
                 new_mat.at(i,j) += (a.at(i,k) * b.at(k, j));
             }
@@ -196,7 +199,7 @@ float cofactor(const auto& m, const size_t x, const size_t y)
     return cofactor;
 }
 
-bool is_invertible(const auto& m)
+bool invertible(const auto& m)
 {
     return determinant(m) != 0;
 }
@@ -245,7 +248,7 @@ mat4 scale(float s)
     return scale(s,s,s);
 }
 
-mat4 rotation_x(float angle_radians)
+mat4 rotate_x(float angle_radians)
 {
     auto mat = mat4::identity();
     
@@ -257,7 +260,7 @@ mat4 rotation_x(float angle_radians)
     return mat;
 }
 
-mat4 rotation_y(float angle_radians)
+mat4 rotate_y(float angle_radians)
 {
     auto mat = mat4::identity();
     
@@ -269,7 +272,7 @@ mat4 rotation_y(float angle_radians)
     return mat;
 }
 
-mat4 rotation_z(float angle_radians)
+mat4 rotate_z(float angle_radians)
 {
     auto mat = mat4::identity();
     
@@ -281,7 +284,7 @@ mat4 rotation_z(float angle_radians)
     return mat;
 }
 
-mat4 shearing_x(float y, float z)
+mat4 shear_x(float y, float z)
 {
     auto mat = mat4::identity();
     mat.at(0,1) = y;
@@ -289,7 +292,7 @@ mat4 shearing_x(float y, float z)
     return mat;
 }
 
-mat4 shearing_y(float x, float z)
+mat4 shear_y(float x, float z)
 {
     auto mat = mat4::identity();
     mat.at(1,0) = x;
@@ -297,7 +300,7 @@ mat4 shearing_y(float x, float z)
     return mat;
 }
 
-mat4 shearing_z(float x, float y)
+mat4 shear_z(float x, float y)
 {
     auto mat = mat4::identity();
     mat.at(2,0) = x;
