@@ -19,7 +19,7 @@ void draw_hour_points(canvas& c)
         const auto rotation = rotate_z(step*static_cast<float>(i));
         for (auto j = 0; j != 3; j++)
         {            
-            auto p = tuple::make_point();
+            auto p = make_point();
             const auto to_the_right  = translate(radius-static_cast<float>(j), 0, 0);
             p = to_the_center * rotation * to_the_right *p;
             c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::white());
@@ -34,7 +34,7 @@ void draw_minute_points(canvas& c)
     {
         static const auto step = two_pi/60.f;
         const auto rotation = rotate_z(step*static_cast<float>(i));
-        auto p = tuple::make_point();
+        auto p = make_point();
         p = to_the_center * rotation * to_the_right *p;
         c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::green());
     }
@@ -47,7 +47,7 @@ void draw_hour_hand(canvas& c, const std::chrono::hours& hours, const std::chron
     for(auto i = 0; i != radius/2; i++)
     {
         auto go_up = translate(0, static_cast<float>(-i), 0);
-        auto p = tuple::make_point();
+        auto p = make_point();
         p = to_the_center * rotation * go_up *p;
         c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::blue());
     }
@@ -60,7 +60,7 @@ void draw_minutes_hand(canvas& c, const std::chrono::minutes& minutes)
     {
         auto go_up = translate(0, static_cast<float>(-i), 0);
         auto rotation = rotate_z(1.f/60.f * static_cast<float>(minutes.count())*two_pi);
-        auto p = tuple::make_point();
+        auto p = make_point();
         p = to_the_center * rotation * go_up *p;
         c.paint_pixel(static_cast<size_t>(p.x), static_cast<size_t>(p.y), color::yellow());
     }

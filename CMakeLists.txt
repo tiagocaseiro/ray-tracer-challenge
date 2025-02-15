@@ -2,16 +2,14 @@ cmake_minimum_required(VERSION 3.31)
 
 project(ray-tracer LANGUAGES CXX)
 
-add_executable(ray-tracer src/main.cpp)
+include_directories(src)
+
+add_executable(ray-tracer src/main.cpp src/tuple.cpp src/common.cpp src/canvas.cpp src/ray.cpp)
 
 target_compile_options(ray-tracer PRIVATE /Wall /WX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-target_link_libraries(ray-tracer core)
-
-target_include_directories(ray-tracer PUBLIC core)
 
 target_compile_features(ray-tracer PUBLIC cxx_std_20)
 
@@ -32,18 +30,18 @@ add_executable(
   tests/color_test.cpp
   tests/canvas_test.cpp
   tests/mat_test.cpp
+  tests/ray_test.cpp
+  src/tuple.cpp 
+  src/common.cpp 
+  src/canvas.cpp 
+  src/ray.cpp
 )
 
 target_link_libraries(
   ray-tracer-tests
   GTest::gtest_main
-  core
 )
 
-target_include_directories(ray-tracer-tests PUBLIC core)
-target_include_directories(ray-tracer PUBLIC core)
 
 include(GoogleTest)
 gtest_discover_tests(ray-tracer-tests)
-
-add_subdirectory(core)

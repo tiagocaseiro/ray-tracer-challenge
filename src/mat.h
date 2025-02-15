@@ -205,7 +205,7 @@ bool invertible(const auto& m)
 }
 
 template<size_t n>
-auto inverse(mat<n> m)
+auto inverse(const mat<n>& m)
 {
     float d = determinant(m);
     if (d == 0)
@@ -225,7 +225,7 @@ auto inverse(mat<n> m)
     return m_inverse;
 }
 
-mat4 translate(float x, float y, float z)
+mat4 translate(const float x, const float y, const float z)
 {
     auto mat = mat4::identity();
     mat.at(0,3) = x;
@@ -234,7 +234,7 @@ mat4 translate(float x, float y, float z)
     return mat;
 }
 
-mat4 scale(float x, float y, float z)
+mat4 scale(const float x, const float y, const float z)
 {
     auto mat = mat4::identity();
     mat.at(0,0) = x;
@@ -243,12 +243,12 @@ mat4 scale(float x, float y, float z)
     return mat;
 }
 
-mat4 scale(float s)
+mat4 scale(const float s)
 {
     return scale(s,s,s);
 }
 
-mat4 rotate_x(float angle_radians)
+mat4 rotate_x(const float angle_radians)
 {
     auto mat = mat4::identity();
     
@@ -260,7 +260,7 @@ mat4 rotate_x(float angle_radians)
     return mat;
 }
 
-mat4 rotate_y(float angle_radians)
+mat4 rotate_y(const float angle_radians)
 {
     auto mat = mat4::identity();
     
@@ -272,7 +272,7 @@ mat4 rotate_y(float angle_radians)
     return mat;
 }
 
-mat4 rotate_z(float angle_radians)
+mat4 rotate_z(const float angle_radians)
 {
     auto mat = mat4::identity();
     
@@ -284,7 +284,7 @@ mat4 rotate_z(float angle_radians)
     return mat;
 }
 
-mat4 shear_x(float y, float z)
+mat4 shear_x(const float y, const float z)
 {
     auto mat = mat4::identity();
     mat.at(0,1) = y;
@@ -292,7 +292,7 @@ mat4 shear_x(float y, float z)
     return mat;
 }
 
-mat4 shear_y(float x, float z)
+mat4 shear_y(const float x, const float z)
 {
     auto mat = mat4::identity();
     mat.at(1,0) = x;
@@ -300,7 +300,7 @@ mat4 shear_y(float x, float z)
     return mat;
 }
 
-mat4 shear_z(float x, float y)
+mat4 shear_z(const float x, const float y)
 {
     auto mat = mat4::identity();
     mat.at(2,0) = x;

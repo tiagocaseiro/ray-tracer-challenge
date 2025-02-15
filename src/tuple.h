@@ -11,10 +11,11 @@ struct tuple
     union { float z = 0.0, b; };
     union { float w = 0.0, a; };
     
-    static tuple make_point(const float x = 0, const  float y = 0, const float z = 0);
-    static tuple make_vector(const float x = 0, const  float y = 0, const  float z = 0);
     static tuple zero();
 };
+
+tuple make_point(const float x = 0, const  float y = 0, const float z = 0);
+tuple make_vector(const float x = 0, const  float y = 0, const  float z = 0);
 
 struct color : tuple
 {

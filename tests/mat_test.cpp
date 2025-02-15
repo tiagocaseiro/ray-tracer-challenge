@@ -426,27 +426,27 @@ TEST(mat, InverseMultiplicationTuple)
 TEST(mat, TranslationPoint)
 {
     auto m = translate(5, -3, 2);
-    auto p = tuple::make_point(-3, 4, 5);
+    auto p = make_point(-3, 4, 5);
     
     auto q = m*p;
 
-    EXPECT_EQ(q, tuple::make_point(2, 1, 7));
+    EXPECT_EQ(q, make_point(2, 1, 7));
 }
 
 TEST(mat, TranslationPointInverse)
 {
     auto m = inverse(translate(5, -3, 2));
-    auto p = tuple::make_point(-3, 4, 5);
+    auto p = make_point(-3, 4, 5);
     
     auto q = m*p;
 
-    EXPECT_EQ(q, tuple::make_point(-8, 7, 3));
+    EXPECT_EQ(q, make_point(-8, 7, 3));
 }
 
 TEST(mat, TranslationVector)
 {
     auto m = inverse(translate(5, -3, 2));
-    auto p = tuple::make_vector(-3, 4, 5);
+    auto p = make_vector(-3, 4, 5);
     
     auto q = m*p;
 
@@ -456,160 +456,160 @@ TEST(mat, TranslationVector)
 TEST(mat, ScalePoint)
 {
     auto m = scale(2, 3, 4);
-    auto p = tuple::make_point(-4, 6, 8);
+    auto p = make_point(-4, 6, 8);
     
     auto q = m*p;
 
-    EXPECT_EQ(q, tuple::make_point(-8, 18, 32));
+    EXPECT_EQ(q, make_point(-8, 18, 32));
 }
 
 TEST(mat, ScaleVector)
 {
     auto m = scale(2, 3, 4);
-    auto p = tuple::make_vector(-4, 6, 8);
+    auto p = make_vector(-4, 6, 8);
     
     auto q = m*p;
 
-    EXPECT_EQ(q, tuple::make_vector(-8, 18, 32));
+    EXPECT_EQ(q, make_vector(-8, 18, 32));
 }
 
 TEST(mat, ScaleVectorInverse)
 {
     auto m = inverse(scale(2, 3, 4));
-    auto p = tuple::make_vector(-4, 6, 8);
+    auto p = make_vector(-4, 6, 8);
     
     auto q = m*p;
 
-    EXPECT_EQ(q, tuple::make_vector(-2, 2, 2));
+    EXPECT_EQ(q, make_vector(-2, 2, 2));
 }
 
 TEST(mat, ReflectPoint)
 {
     auto m = scale(-1, 1, 1);
-    auto p = tuple::make_point(2, 3, 4);
+    auto p = make_point(2, 3, 4);
     
     auto q = m*p;
 
-    EXPECT_EQ(q, tuple::make_point(-2, 3, 4));
+    EXPECT_EQ(q, make_point(-2, 3, 4));
 }
 
 TEST(mat, RotationX)
 {
-    auto p = tuple::make_point(0, 1, 0);
+    auto p = make_point(0, 1, 0);
 
     auto half_quarter = rotate_x(pi/4);
     auto full_quarter = rotate_x(pi/2);
 
-    EXPECT_EQ(half_quarter*p, tuple::make_point(0, std::sqrt(2)/2, std::sqrt(2)/2));
-    EXPECT_EQ(full_quarter*p, tuple::make_point(0, 0, 1));
+    EXPECT_EQ(half_quarter*p, make_point(0, std::sqrt(2)/2, std::sqrt(2)/2));
+    EXPECT_EQ(full_quarter*p, make_point(0, 0, 1));
 }
 
 TEST(mat, RotationXInverse)
 {
-    auto p = tuple::make_point(0, 1, 0);
+    auto p = make_point(0, 1, 0);
 
     auto half_quarter_inverse = inverse(rotate_x(pi/4));
 
-    EXPECT_EQ(half_quarter_inverse*p, tuple::make_point(0, std::sqrt(2)/2, -std::sqrt(2)/2));
+    EXPECT_EQ(half_quarter_inverse*p, make_point(0, std::sqrt(2)/2, -std::sqrt(2)/2));
 }
 
 TEST(mat, RotationY)
 {
-    auto p = tuple::make_point(0, 0, 1);
+    auto p = make_point(0, 0, 1);
 
     auto half_quarter = rotate_y(pi/4);
     auto full_quarter = rotate_y(pi/2);
 
-    EXPECT_EQ(half_quarter*p, tuple::make_point(std::sqrt(2)/2, 0 , std::sqrt(2)/2));
-    EXPECT_EQ(full_quarter*p, tuple::make_point(1, 0, 0));
+    EXPECT_EQ(half_quarter*p, make_point(std::sqrt(2)/2, 0 , std::sqrt(2)/2));
+    EXPECT_EQ(full_quarter*p, make_point(1, 0, 0));
 }
 
 TEST(mat, RotationZ)
 {
-    auto p = tuple::make_point(0, 1, 0);
+    auto p = make_point(0, 1, 0);
 
     auto half_quarter = rotate_z(pi/4);
     auto full_quarter = rotate_z(pi/2);
 
-    EXPECT_EQ(half_quarter*p, tuple::make_point(-std::sqrt(2)/2, std::sqrt(2)/2, 0 ));
-    EXPECT_EQ(full_quarter*p, tuple::make_point(-1, 0, 0));
+    EXPECT_EQ(half_quarter*p, make_point(-std::sqrt(2)/2, std::sqrt(2)/2, 0 ));
+    EXPECT_EQ(full_quarter*p, make_point(-1, 0, 0));
 }
 
 TEST(mat, ShearingXToY)
 {
-    auto p = tuple::make_point(2, 3, 4);
+    auto p = make_point(2, 3, 4);
 
     auto mat = shear_x(1, 0);
 
-    EXPECT_EQ(mat*p, tuple::make_point(5, 3, 4));
+    EXPECT_EQ(mat*p, make_point(5, 3, 4));
 }
 
 TEST(mat, ShearingXToZ)
 {
-    auto p = tuple::make_point(2, 3, 4);
+    auto p = make_point(2, 3, 4);
 
     auto mat = shear_x(0, 1);
 
-    EXPECT_EQ(mat*p, tuple::make_point(6, 3, 4));
+    EXPECT_EQ(mat*p, make_point(6, 3, 4));
 }
 
 TEST(mat, ShearingYToX)
 {
-    auto p = tuple::make_point(2, 3, 4);
+    auto p = make_point(2, 3, 4);
 
     auto mat = shear_y(1, 0);
 
-    EXPECT_EQ(mat*p, tuple::make_point(2, 5, 4));
+    EXPECT_EQ(mat*p, make_point(2, 5, 4));
 }
 
 TEST(mat, ShearingYToZ)
 {
-    auto p = tuple::make_point(2, 3, 4);
+    auto p = make_point(2, 3, 4);
 
     auto mat = shear_y(0, 1);
 
-    EXPECT_EQ(mat*p, tuple::make_point(2, 7, 4));
+    EXPECT_EQ(mat*p, make_point(2, 7, 4));
 }
 
 TEST(mat, ShearingZToX)
 {
-    auto p = tuple::make_point(2, 3, 4);
+    auto p = make_point(2, 3, 4);
 
     auto mat = shear_z(1, 0);
 
-    EXPECT_EQ(mat*p, tuple::make_point(2, 3, 6));
+    EXPECT_EQ(mat*p, make_point(2, 3, 6));
 }
 
 TEST(mat, ShearingZToY)
 {
-    auto p = tuple::make_point(2, 3, 4);
+    auto p = make_point(2, 3, 4);
 
     auto mat = shear_z(0, 1);
 
-    EXPECT_EQ(mat*p, tuple::make_point(2, 3, 7));
+    EXPECT_EQ(mat*p, make_point(2, 3, 7));
 }
 
 TEST(mat, IndividualTransform)
 {
-    auto p = tuple::make_point(1, 0, 1);
+    auto p = make_point(1, 0, 1);
 
     auto mat_a = rotate_x(pi/2);
     auto mat_b = scale(5, 5, 5);
     auto mat_c = translate(10, 5, 7) ;
 
     p = mat_a * p;
-    EXPECT_EQ(p, tuple::make_point(1, -1, 0));
+    EXPECT_EQ(p, make_point(1, -1, 0));
 
     p = mat_b * p;
-    EXPECT_EQ(p, tuple::make_point(5, -5, 0));
+    EXPECT_EQ(p, make_point(5, -5, 0));
 
     p = mat_c * p;
-    EXPECT_EQ(p, tuple::make_point(15, 0, 7));
+    EXPECT_EQ(p, make_point(15, 0, 7));
 }
 
 TEST(mat, ChainedTransform)
 {
-    auto p = tuple::make_point(1, 0, 1);
+    auto p = make_point(1, 0, 1);
 
     auto mat_a = rotate_x(pi/2);
     auto mat_b = scale(5, 5, 5);
@@ -618,5 +618,5 @@ TEST(mat, ChainedTransform)
     auto mat = mat_c * mat_b * mat_a;
 
     p = mat * p;
-    EXPECT_EQ(p, tuple::make_point(15, 0, 7));
+    EXPECT_EQ(p, make_point(15, 0, 7));
 }
